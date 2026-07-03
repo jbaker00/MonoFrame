@@ -1,0 +1,8 @@
+.DS_Store
+xcuserdata/
+build/
+DerivedData/
+node_modules/
+*.log
+firmware/MonoFrameDisplay/config.h
+sec.h

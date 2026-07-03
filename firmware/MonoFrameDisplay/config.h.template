@@ -1,0 +1,7 @@
+// Copy this file to `config.h`. Since v2 there is nothing per-user in here —
+// WiFi details and frame credentials are provisioned over the air by the
+// MonoFrame app and stored in NVS flash. One binary works for everyone.
+
+#pragma once
+
+#define FRAME_BASE_URL "https://us-central1-monoframe-app.cloudfunctions.net"

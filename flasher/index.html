@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>MonoFrame — Flash Your Frame</title>
+  <style>
+    :root { color-scheme: light dark; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      max-width: 640px;
+      margin: 0 auto;
+      padding: 2rem 1.25rem 4rem;
+      line-height: 1.55;
+    }
+    h1 { letter-spacing: -0.02em; }
+    ol li { margin-bottom: 0.5rem; }
+    .flash-box {
+      margin: 2rem 0;
+      padding: 1.5rem;
+      border: 2px solid currentColor;
+      border-radius: 12px;
+      text-align: center;
+    }
+    .note { font-size: 0.9rem; opacity: 0.75; }
+    esp-web-install-button { --esp-tools-button-border-radius: 8px; }
+  </style>
+  <script type="module" src="https://unpkg.com/esp-web-tools@10/dist/web/install-button.js?module"></script>
+</head>
+<body>
+  <h1>MonoFrame</h1>
+  <p>
+    Flash the MonoFrame firmware onto your
+    <strong>Elecrow CrowPanel ESP32-S3 4.2&Prime; e-paper display</strong>
+    straight from this page — no software to install. You only do this once;
+    after that, the MonoFrame iOS app handles all setup over WiFi.
+  </p>
+
+  <h2>Steps</h2>
+  <ol>
+    <li>Use <strong>Chrome</strong> or <strong>Edge</strong> on a computer (Safari and phones won't work).</li>
+    <li>Plug the frame into this computer with a <strong>USB-C data cable</strong>.</li>
+    <li>Click <strong>Connect</strong> below and pick the USB serial port that appears.</li>
+    <li>Click <strong>Install MonoFrame</strong> and wait for it to finish (about a minute).</li>
+    <li>Unplug the frame. Its screen will show <strong>Setup Mode</strong> — now open the
+        MonoFrame app on your iPhone and tap <em>My Frames → Add a Frame</em>.</li>
+  </ol>
+
+  <div class="flash-box">
+    <esp-web-install-button manifest="manifest.json"></esp-web-install-button>
+    <p class="note">If the button says your browser is unsupported, switch to Chrome or Edge.</p>
+  </div>
+
+  <p class="note">
+    Trouble connecting? Hold the frame's <strong>BOOT</strong> button while plugging
+    it in to force download mode, then try again. Flashing at most erases and
+    rewrites the frame's firmware — it can't harm your computer.
+  </p>
+
+  <p class="note">
+    MonoFrame is open source —
+    <a href="https://github.com/jbaker00/MonoFrame">github.com/jbaker00/MonoFrame</a>.
+  </p>
+</body>
+</html>
