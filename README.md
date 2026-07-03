@@ -29,6 +29,9 @@ pictures and no service-account key ships in the app.
    credentials + frameId + token to `192.168.4.1/provision`. The frame stores
    everything in NVS and reboots; the app confirms success by polling
    `frameStatus` until the frame's first `getFrame` stamps `lastSeen`.
+   The wizard's "No frame yet? Try a demo" button pairs a simulated frame
+   (device steps faked, backend registration and uploads real) so App Store
+   reviewers — and the curious — can walk the whole flow without hardware.
 3. **Multiple frames**: credentials for every paired frame live in the
    Keychain (`FrameStore`); the main screen gets a frame picker and a
    "Send to All Frames" action.
