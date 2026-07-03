@@ -9,13 +9,17 @@ struct SetupWizardView: View {
 
     static let flasherURL = URL(string: "https://jbaker00.github.io/MonoFrame/flasher/")!
 
-    // In the simulator NEHotspotConfiguration and the 192.168.4.1 device are
-    // unavailable, so the wizard fakes the device steps to keep the UI testable.
+    // The device steps are faked in two cases: demo mode (lets anyone — App
+    // Store reviewers especially — walk the whole flow without hardware; the
+    // backend registration and uploads are real) and the simulator, where
+    // NEHotspotConfiguration and the 192.168.4.1 device don't exist.
     #if targetEnvironment(simulator)
-    private static let simulateDevice = true
+    private static let isSimulator = true
     #else
-    private static let simulateDevice = false
+    private static let isSimulator = false
     #endif
+    @State private var isDemo = false
+    private var simulateDevice: Bool { isDemo || Self.isSimulator }
 
     private enum Step {
         case intro
@@ -128,6 +132,15 @@ struct SetupWizardView: View {
             }
             .buttonStyle(.borderedProminent)
             .disabled(isWorking)
+
+            Button {
+                isDemo = true
+                ssid = "Demo Network"
+                Task { await beginConnect() }
+            } label: {
+                buttonLabel("No frame yet? Try a demo")
+            }
+            .disabled(isWorking)
         }
     }
 
@@ -170,6 +183,11 @@ struct SetupWizardView: View {
             }
             Text("Enter the WiFi network your frame should use. This is sent directly to the frame and stored only on it.")
                 .font(.callout)
+            if isDemo {
+                Text("Demo mode: any network name works — nothing is sent to a real device.")
+                    .font(.callout)
+                    .foregroundStyle(.secondary)
+            }
 
             VStack(spacing: 0) {
                 TextField("WiFi network name (SSID)", text: $ssid)
@@ -234,6 +252,11 @@ struct SetupWizardView: View {
                 .padding(12)
                 .background(.gray.opacity(0.1))
                 .clipShape(RoundedRectangle(cornerRadius: 10))
+            if isDemo {
+                Text("This demo frame works like a real one — pictures you send are uploaded and would appear on a paired frame.")
+                    .font(.callout)
+                    .foregroundStyle(.secondary)
+            }
             Button {
                 finish()
             } label: {
@@ -274,9 +297,9 @@ struct SetupWizardView: View {
         isWorking = true
         defer { isWorking = false }
 
-        if Self.simulateDevice {
+        if simulateDevice {
             try? await Task.sleep(for: .seconds(1))
-            deviceName = "MonoFrame-SIM1"
+            deviceName = isDemo ? "MonoFrame-DEMO" : "MonoFrame-SIM1"
             step = .wifi
             return
         }
@@ -316,7 +339,7 @@ struct SetupWizardView: View {
         step = .provisioning
         defer { isWorking = false }
 
-        if Self.simulateDevice {
+        if simulateDevice {
             try? await Task.sleep(for: .seconds(1))
             step = .confirm
             await confirmOnline()
@@ -342,8 +365,9 @@ struct SetupWizardView: View {
                           name: "New Frame", createdAt: Date())
         confirmElapsed = 0
 
-        if Self.simulateDevice {
+        if simulateDevice {
             try? await Task.sleep(for: .seconds(2))
+            if isDemo && frameName.isEmpty { frameName = "Demo Frame" }
             step = .name
             return
         }
