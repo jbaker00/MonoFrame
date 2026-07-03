@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>MonoFrame — Privacy Policy</title>
+  <link rel="icon" href="assets/icon.png">
+  <style>
+    :root { color-scheme: light dark; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      max-width: 720px; margin: 0 auto; padding: 2rem 1.25rem 4rem; line-height: 1.6;
+    }
+    h1 { letter-spacing: -0.02em; }
+    .date { opacity: 0.7; font-size: 0.9rem; }
+    a.back { text-decoration: none; }
+  </style>
+</head>
+<body>
+  <p><a class="back" href="index.html">&larr; MonoFrame</a></p>
+  <h1>Privacy Policy</h1>
+  <p class="date">Effective date: July 3, 2026</p>
+
+  <p>MonoFrame is built to need as little of your data as possible. There are no user
+  accounts — we never ask for your name, email address, or phone number.</p>
+
+  <h2>Photos you send</h2>
+  <p>When you send a photo to a frame, the image is converted on your device to a small
+  1-bit black &amp; white file (400×300 pixels). Only that converted file is uploaded to
+  our cloud storage (Google Firebase, operated by Google LLC) so your frame can download
+  it. The original photo never leaves your device.</p>
+  <p>Each frame stores only its most recent image; sending a new photo replaces the
+  previous one. Images are associated with a random frame ID, not with you.</p>
+
+  <h2>Frame credentials</h2>
+  <p>Each frame is identified by a randomly generated frame ID and secret token. The
+  token is stored in your device's Keychain and on the frame itself. Our servers store
+  only a cryptographic hash of the token and a "last seen" timestamp, used to show your
+  frame's status. Your home WiFi password is sent directly from your phone to the frame
+  over the frame's own setup hotspot — it is never sent to our servers.</p>
+
+  <h2>Advertising</h2>
+  <p>MonoFrame is free and supported by ads served by Google AdMob. On first use, iOS
+  will ask whether you allow tracking (App Tracking Transparency). If you allow it,
+  AdMob may use your device's advertising identifier (IDFA) to show more relevant ads.
+  If you decline, you still get the full app — ads are simply not personalized. Ad
+  serving by Google is subject to
+  <a href="https://policies.google.com/privacy">Google's Privacy Policy</a>.</p>
+
+  <h2>Local network access</h2>
+  <p>During setup, the app talks to your frame directly over your local network, and can
+  optionally scan your network to discover frames. This traffic stays on your network and
+  is never sent to us.</p>
+
+  <h2>What we don't do</h2>
+  <ul>
+    <li>No accounts, and no collection of names, emails, or contacts</li>
+    <li>No access to your photo library beyond the photos you explicitly pick</li>
+    <li>No location tracking</li>
+    <li>No selling of personal data</li>
+  </ul>
+
+  <h2>Data retention &amp; deletion</h2>
+  <p>Removing a frame in the app deletes its credentials from your device. Each frame's
+  stored image is overwritten on every send. If you would like the data for a frame
+  removed from our servers entirely, email us with the frame ID (shown in the app) and
+  we will delete it.</p>
+
+  <h2>Children</h2>
+  <p>MonoFrame is not directed at children under 13, and we do not knowingly collect
+  personal information from children.</p>
+
+  <h2>Changes</h2>
+  <p>If this policy changes, the updated version will be posted at this address with a
+  new effective date.</p>
+
+  <h2>Contact</h2>
+  <p>Questions? Email <a href="mailto:jbaker00@gmail.com">jbaker00@gmail.com</a>.</p>
+</body>
+</html>

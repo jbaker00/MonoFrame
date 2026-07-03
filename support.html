@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>MonoFrame — Support</title>
+  <link rel="icon" href="assets/icon.png">
+  <style>
+    :root { color-scheme: light dark; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      max-width: 720px; margin: 0 auto; padding: 2rem 1.25rem 4rem; line-height: 1.6;
+    }
+    h1 { letter-spacing: -0.02em; }
+    .contact {
+      margin: 1.5rem 0; padding: 1.25rem; border: 2px solid currentColor;
+      border-radius: 12px; text-align: center;
+    }
+    a.back { text-decoration: none; }
+  </style>
+</head>
+<body>
+  <p><a class="back" href="index.html">&larr; MonoFrame</a></p>
+  <h1>Support</h1>
+
+  <div class="contact">
+    <strong>Need help?</strong><br>
+    Email <a href="mailto:jbaker00@gmail.com?subject=MonoFrame%20Support">jbaker00@gmail.com</a>
+    — we usually reply within a day or two.
+  </div>
+
+  <h2>Frequently asked questions</h2>
+
+  <h3>Which frames does MonoFrame work with?</h3>
+  <p>The Elecrow CrowPanel ESP32-S3 4.2&Prime; e-paper display, flashed with the free
+  MonoFrame firmware. Flashing takes a couple of minutes from a Chrome or Edge browser —
+  see the <a href="flasher/">web flasher</a>.</p>
+
+  <h3>Can I try the app without a frame?</h3>
+  <p>Yes. In <em>My Frames → Add a Frame</em>, tap <em>"No frame yet? Try a demo"</em>.
+  You get a simulated frame that behaves like the real thing so you can explore the whole
+  app.</p>
+
+  <h3>My frame isn't picking up new photos</h3>
+  <p>Frames wake about every 30 minutes to check for a new photo, then go back to sleep to
+  save battery — so a just-sent photo can take up to half an hour to appear. If it still
+  doesn't update: check the frame's battery/power, and confirm your WiFi is working. After
+  several failed WiFi attempts the frame returns to setup mode (it broadcasts a
+  <em>MonoFrame-XXXX</em> hotspot) — just run <em>Add a Frame</em> again.</p>
+
+  <h3>Pairing fails during setup</h3>
+  <ul>
+    <li>Make sure the frame is in setup mode (freshly flashed, or reset after WiFi failures).</li>
+    <li>The frame only supports <strong>2.4&nbsp;GHz WiFi networks</strong> — 5&nbsp;GHz-only
+    networks won't work. Most routers broadcast both.</li>
+    <li>Stay near the frame during setup; your iPhone briefly joins the frame's hotspot.</li>
+    <li>Setup requires a real iPhone — the device steps don't run in the iOS Simulator.</li>
+  </ul>
+
+  <h3>Why do my photos look different on the frame?</h3>
+  <p>The display shows pure black and white only. MonoFrame converts photos with
+  Floyd–Steinberg dithering, which represents shades of gray using patterns of dots —
+  the same technique used in newspaper printing. High-contrast photos with a clear
+  subject look best. The app shows you an exact preview before you send.</p>
+
+  <h3>How do I remove a frame?</h3>
+  <p>In <em>My Frames</em>, swipe to delete. To wipe the frame itself, re-flash it from
+  the <a href="flasher/">web flasher</a>. If you'd like the frame's data removed from our
+  servers, email us the frame ID shown in the app.</p>
+
+  <h3>How is my privacy handled?</h3>
+  <p>No accounts, no tracking of your photo library, and only the converted 1-bit image
+  is uploaded. See the full <a href="privacy.html">Privacy Policy</a>.</p>
+
+  <p style="margin-top:2.5rem"><a href="index.html">&larr; Back to MonoFrame</a></p>
+</body>
+</html>
