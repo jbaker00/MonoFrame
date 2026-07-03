@@ -43,6 +43,8 @@ final class AdsManager: NSObject, ObservableObject, GADFullScreenContentDelegate
 
     /// Idempotent; call on every scene-active transition.
     func activate() {
+        // Keeps ATT prompts and "Test Ad" banners out of App Store screenshots.
+        guard !CommandLine.arguments.contains("-screenshots") else { return }
         guard !isReady, !isStarting else { return }
         isStarting = true
         Task {

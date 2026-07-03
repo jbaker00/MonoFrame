@@ -10,6 +10,7 @@
 		059250EEF9F154084B0F1747 /* FrameStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = A8FDDA2E56C6E0393A15B9E1 /* FrameStore.swift */; };
 		07EBD3862BDFA106AFB4F635 /* AdManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 616A15FDFE60DE750A7E6616 /* AdManager.swift */; };
 		107A133F7B8B30B2229E6090 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 1B62D73737DFE666F2354B2D /* Assets.xcassets */; };
+		128B6209B763AAE050C28D8A /* ScreenshotTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49CB5F8A2A16109D9AD13366 /* ScreenshotTests.swift */; };
 		1EF280DE5C22CD751A5622FF /* GoogleMobileAds in Frameworks */ = {isa = PBXBuildFile; productRef = CD6A64F1C7C35C975DCF5CC4 /* GoogleMobileAds */; };
 		2E6CAA41FC9C14134225190C /* DeviceClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6FBD7AFF405F6C997916267 /* DeviceClient.swift */; };
 		41C9A21DA59A092CEF6266EB /* EinkConverter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21ED6565E828E961E292F678 /* EinkConverter.swift */; };
@@ -20,14 +21,26 @@
 		D41D8AA67E7707BB62413F16 /* FramesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 09A48C36559B60EF42539337 /* FramesView.swift */; };
 /* End PBXBuildFile section */
 
+/* Begin PBXContainerItemProxy section */
+		89F47A05FB0FC73E7E852986 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 4AC912DF6D151848E14AC1E8 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 726AF17A1B9DB6D1A190436B;
+			remoteInfo = MonoFrame;
+		};
+/* End PBXContainerItemProxy section */
+
 /* Begin PBXFileReference section */
 		09A48C36559B60EF42539337 /* FramesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FramesView.swift; sourceTree = "<group>"; };
 		1B62D73737DFE666F2354B2D /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		21ED6565E828E961E292F678 /* EinkConverter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EinkConverter.swift; sourceTree = "<group>"; };
 		376CFC2A0A421A07C2BEC795 /* FrameService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FrameService.swift; sourceTree = "<group>"; };
+		49CB5F8A2A16109D9AD13366 /* ScreenshotTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScreenshotTests.swift; sourceTree = "<group>"; };
 		4E30FBBDC9C13F7A553AFBF9 /* MonoFrameApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MonoFrameApp.swift; sourceTree = "<group>"; };
 		616A15FDFE60DE750A7E6616 /* AdManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdManager.swift; sourceTree = "<group>"; };
 		820BD066EC78ADABE177F8E4 /* SetupWizardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SetupWizardView.swift; sourceTree = "<group>"; };
+		9BE08FD8CB69165ADEED3D46 /* MonoFrameUITests.xctest */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.cfbundle; path = MonoFrameUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		A7F50BC928F0CC8508CD0CBB /* MonoFrame.app */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.application; path = MonoFrame.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		A8FDDA2E56C6E0393A15B9E1 /* FrameStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FrameStore.swift; sourceTree = "<group>"; };
 		C046C273624DD2F4DC2DD621 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -46,6 +59,15 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		0A6B903D4B4F1E58E43678AC /* MonoFrameUITests */ = {
+			isa = PBXGroup;
+			children = (
+				49CB5F8A2A16109D9AD13366 /* ScreenshotTests.swift */,
+			);
+			name = MonoFrameUITests;
+			path = Tests/MonoFrameUITests;
+			sourceTree = "<group>";
+		};
 		71C6969C519F1D6A06361D2B /* Resources */ = {
 			isa = PBXGroup;
 			children = (
@@ -76,6 +98,7 @@
 			isa = PBXGroup;
 			children = (
 				A7F50BC928F0CC8508CD0CBB /* MonoFrame.app */,
+				9BE08FD8CB69165ADEED3D46 /* MonoFrameUITests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -84,6 +107,7 @@
 			isa = PBXGroup;
 			children = (
 				72C089DF31104D7971551BE4 /* MonoFrame */,
+				0A6B903D4B4F1E58E43678AC /* MonoFrameUITests */,
 				D97FD166C1085CE90566C5E3 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -91,6 +115,24 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
+		09DB959ACEDBDCD28CB72EE6 /* MonoFrameUITests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = EAA6E3B09347A18BC6833189 /* Build configuration list for PBXNativeTarget "MonoFrameUITests" */;
+			buildPhases = (
+				0561EFB139D27BE92FFDFE90 /* Sources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				ECD6E295BF220704F1AF297C /* PBXTargetDependency */,
+			);
+			name = MonoFrameUITests;
+			packageProductDependencies = (
+			);
+			productName = MonoFrameUITests;
+			productReference = 9BE08FD8CB69165ADEED3D46 /* MonoFrameUITests.xctest */;
+			productType = "com.apple.product-type.bundle.ui-testing";
+		};
 		726AF17A1B9DB6D1A190436B /* MonoFrame */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = 4ACC5E9397DACCCF4F9321DE /* Build configuration list for PBXNativeTarget "MonoFrame" */;
@@ -120,8 +162,13 @@
 				BuildIndependentTargetsInParallel = YES;
 				LastUpgradeCheck = 1500;
 				TargetAttributes = {
+					09DB959ACEDBDCD28CB72EE6 = {
+						DevelopmentTeam = G3P9A8Z2NP;
+						ProvisioningStyle = Automatic;
+						TestTargetID = 726AF17A1B9DB6D1A190436B;
+					};
 					726AF17A1B9DB6D1A190436B = {
-						DevelopmentTeam = 4PDB3TQD2G;
+						DevelopmentTeam = G3P9A8Z2NP;
 						ProvisioningStyle = Automatic;
 					};
 				};
@@ -144,6 +191,7 @@
 			projectRoot = "";
 			targets = (
 				726AF17A1B9DB6D1A190436B /* MonoFrame */,
+				09DB959ACEDBDCD28CB72EE6 /* MonoFrameUITests */,
 			);
 		};
 /* End PBXProject section */
@@ -160,6 +208,14 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
+		0561EFB139D27BE92FFDFE90 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				128B6209B763AAE050C28D8A /* ScreenshotTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		0FD61F293AF0BAE8F86D6C59 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -178,7 +234,47 @@
 		};
 /* End PBXSourcesBuildPhase section */
 
+/* Begin PBXTargetDependency section */
+		ECD6E295BF220704F1AF297C /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 726AF17A1B9DB6D1A190436B /* MonoFrame */;
+			targetProxy = 89F47A05FB0FC73E7E852986 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
 /* Begin XCBuildConfiguration section */
+		14226237CA24829E40779D9C /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.jamesbaker.MonoFrameUITests;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = MonoFrame;
+			};
+			name = Release;
+		};
+		8C9DE3BA6BFADB28B4E77D99 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.jamesbaker.MonoFrameUITests;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = MonoFrame;
+			};
+			name = Debug;
+		};
 		B74F87D02D1D9062F92C5295 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -216,7 +312,7 @@
 				COPY_PHASE_STRIP = NO;
 				CURRENT_PROJECT_VERSION = 1;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
-				DEVELOPMENT_TEAM = 4PDB3TQD2G;
+				DEVELOPMENT_TEAM = G3P9A8Z2NP;
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
@@ -276,7 +372,7 @@
 				COPY_PHASE_STRIP = NO;
 				CURRENT_PROJECT_VERSION = 1;
 				DEBUG_INFORMATION_FORMAT = dwarf;
-				DEVELOPMENT_TEAM = 4PDB3TQD2G;
+				DEVELOPMENT_TEAM = G3P9A8Z2NP;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
@@ -357,6 +453,15 @@
 			buildConfigurations = (
 				BD16F9C956809DD509FD0F31 /* Debug */,
 				B74F87D02D1D9062F92C5295 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		EAA6E3B09347A18BC6833189 /* Build configuration list for PBXNativeTarget "MonoFrameUITests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				8C9DE3BA6BFADB28B4E77D99 /* Debug */,
+				14226237CA24829E40779D9C /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Debug;
