@@ -4,6 +4,7 @@ import PhotosUI
 struct ContentView: View {
     @State private var pickedItem: PhotosPickerItem?
     @State private var pickedImage: UIImage?
+    @State private var quarterTurns = 0
     @State private var previewCGImage: CGImage?
     @State private var status: String = ""
     @State private var isBusy = false
@@ -148,6 +149,27 @@ struct ContentView: View {
         .aspectRatio(CGFloat(targetModel.width) / CGFloat(targetModel.height),
                      contentMode: .fit)
         .frame(maxWidth: 480)
+        .overlay(alignment: .bottomTrailing) {
+            if previewCGImage != nil {
+                Button {
+                    quarterTurns = (quarterTurns + 1) % 4
+                    rerenderPreview()
+                } label: {
+                    Image(systemName: "rotate.right")
+                        .font(.system(size: 17, weight: .semibold))
+                        .padding(10)
+                        .background(.thinMaterial, in: Circle())
+                }
+                .accessibilityLabel("Rotate picture")
+                .padding(12)
+                .disabled(isBusy)
+            }
+        }
+    }
+
+    // What the frame will get: the picked photo plus the user's rotation.
+    private var orientedImage: UIImage? {
+        pickedImage.map { EinkConverter.rotated($0, quarterTurns: quarterTurns) }
     }
 
     private func loadPick(_ item: PhotosPickerItem?) async {
@@ -160,7 +182,8 @@ struct ContentView: View {
                 return
             }
             pickedImage = img
-            previewCGImage = EinkConverter.previewCGImage(from: img, for: targetModel)
+            quarterTurns = 0
+            rerenderPreview()
             status = previewCGImage == nil
                 ? "Could not render preview."
                 : "Ready to send."
@@ -170,7 +193,7 @@ struct ContentView: View {
     }
 
     private func rerenderPreview() {
-        guard let img = pickedImage else { return }
+        guard let img = orientedImage else { return }
         previewCGImage = EinkConverter.previewCGImage(from: img, for: targetModel)
     }
 
@@ -179,7 +202,7 @@ struct ContentView: View {
             status = "No frame selected."
             return
         }
-        guard let img = pickedImage else {
+        guard let img = orientedImage else {
             status = "Could not convert image."
             return
         }

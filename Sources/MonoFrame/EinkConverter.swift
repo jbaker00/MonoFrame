@@ -14,6 +14,26 @@ enum EinkConverter {
         return pack1Bit(dithered, model)
     }
 
+    // Redraws the image turned by `quarterTurns` × 90° clockwise. Goes through
+    // UIImage.draw, which also bakes in any EXIF orientation — the dither path
+    // reads raw cgImage bits and would otherwise show portrait shots sideways.
+    static func rotated(_ image: UIImage, quarterTurns: Int) -> UIImage {
+        let turns = ((quarterTurns % 4) + 4) % 4
+        let size = turns % 2 == 0
+            ? image.size
+            : CGSize(width: image.size.height, height: image.size.width)
+        let format = UIGraphicsImageRendererFormat()
+        format.scale = image.scale
+        return UIGraphicsImageRenderer(size: size, format: format).image { ctx in
+            ctx.cgContext.translateBy(x: size.width / 2, y: size.height / 2)
+            ctx.cgContext.rotate(by: CGFloat(turns) * .pi / 2)
+            image.draw(in: CGRect(x: -image.size.width / 2,
+                                  y: -image.size.height / 2,
+                                  width: image.size.width,
+                                  height: image.size.height))
+        }
+    }
+
     // What the panel will actually display, returned as an 8-bit gray CGImage
     // so SwiftUI can show a "this is what you're sending" preview.
     static func previewCGImage(from image: UIImage, for model: DeviceModel) -> CGImage? {
