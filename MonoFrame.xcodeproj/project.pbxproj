@@ -47,7 +47,7 @@
 		820BD066EC78ADABE177F8E4 /* SetupWizardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SetupWizardView.swift; sourceTree = "<group>"; };
 		92EDC66D07DF8E11D2235C83 /* monoframe-ota-579.bin */ = {isa = PBXFileReference; lastKnownFileType = archive.macbinary; path = "monoframe-ota-579.bin"; sourceTree = "<group>"; };
 		9BE08FD8CB69165ADEED3D46 /* MonoFrameUITests.xctest */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.cfbundle; path = MonoFrameUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		A7F50BC928F0CC8508CD0CBB /* MonoFrame.app */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.application; path = MonoFrame.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		A7F50BC928F0CC8508CD0CBB /* MonoFrame.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MonoFrame.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		A8FDDA2E56C6E0393A15B9E1 /* FrameStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FrameStore.swift; sourceTree = "<group>"; };
 		C046C273624DD2F4DC2DD621 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		D6FBD7AFF405F6C997916267 /* DeviceClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeviceClient.swift; sourceTree = "<group>"; };
@@ -174,7 +174,6 @@
 						TestTargetID = 726AF17A1B9DB6D1A190436B;
 					};
 					726AF17A1B9DB6D1A190436B = {
-						DevelopmentTeam = G3P9A8Z2NP;
 						ProvisioningStyle = Automatic;
 					};
 				};
@@ -415,6 +414,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = Sources/MonoFrame/Resources/MonoFrame.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
+				DEVELOPMENT_TEAM = G3P9A8Z2NP;
 				INFOPLIST_FILE = Sources/MonoFrame/Resources/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -432,6 +432,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = Sources/MonoFrame/Resources/MonoFrame.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
+				DEVELOPMENT_TEAM = G3P9A8Z2NP;
 				INFOPLIST_FILE = Sources/MonoFrame/Resources/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",

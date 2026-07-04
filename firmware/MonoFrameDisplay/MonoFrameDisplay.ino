@@ -411,7 +411,8 @@ void handleUpdateDone() {
 void runSetupMode() {
   String ap = deviceName();
   String apPass = apPassword();
-  Serial.printf("Setup mode — AP %s\n", ap.c_str());
+  // Printing the code is fine: anyone with USB serial can read NVS anyway.
+  Serial.printf("Setup mode — AP %s code %s\n", ap.c_str(), apPass.c_str());
 
   String lines[] = {
     "MonoFrame - Setup Mode",
