@@ -23,6 +23,19 @@
       text-align: center;
     }
     .note { font-size: 0.9rem; opacity: 0.75; }
+    .panel-picker {
+      border: none;
+      padding: 0;
+      margin: 0 0 1.25rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.4rem;
+      align-items: center;
+    }
+    .panel-picker legend {
+      font-weight: 600;
+      margin-bottom: 0.5rem;
+    }
     esp-web-install-button { --esp-tools-button-border-radius: 8px; }
   </style>
   <script type="module" src="https://unpkg.com/esp-web-tools@10/dist/web/install-button.js?module"></script>
@@ -31,7 +44,7 @@
   <h1>MonoFrame</h1>
   <p>
     Flash the MonoFrame firmware onto your
-    <strong>Elecrow CrowPanel ESP32-S3 4.2&Prime; e-paper display</strong>
+    <strong>Elecrow CrowPanel ESP32-S3 e-paper display</strong>
     straight from this page — no software to install. You only do this once;
     after that, the MonoFrame iOS app handles all setup over WiFi.
   </p>
@@ -40,16 +53,35 @@
   <ol>
     <li>Use <strong>Chrome</strong> or <strong>Edge</strong> on a computer (Safari and phones won't work).</li>
     <li>Plug the frame into this computer with a <strong>USB-C data cable</strong>.</li>
-    <li>Click <strong>Connect</strong> below and pick the USB serial port that appears.</li>
+    <li>Pick your panel size below, click <strong>Connect</strong>, and choose the USB serial port that appears.</li>
     <li>Click <strong>Install MonoFrame</strong> and wait for it to finish (about a minute).</li>
     <li>Unplug the frame. Its screen will show <strong>Setup Mode</strong> — now open the
         MonoFrame app on your iPhone and tap <em>My Frames → Add a Frame</em>.</li>
   </ol>
 
   <div class="flash-box">
-    <esp-web-install-button manifest="manifest.json"></esp-web-install-button>
+    <fieldset class="panel-picker">
+      <legend>Which frame do you have?</legend>
+      <label>
+        <input type="radio" name="panel" value="manifest-42.json" checked>
+        CrowPanel 4.2&Prime; (400 × 300)
+      </label>
+      <label>
+        <input type="radio" name="panel" value="manifest-579.json">
+        CrowPanel 5.79&Prime; (792 × 272)
+      </label>
+    </fieldset>
+    <esp-web-install-button manifest="manifest-42.json"></esp-web-install-button>
     <p class="note">If the button says your browser is unsupported, switch to Chrome or Edge.</p>
   </div>
+  <script>
+    const installButton = document.querySelector("esp-web-install-button");
+    for (const radio of document.querySelectorAll('input[name="panel"]')) {
+      radio.addEventListener("change", () => {
+        installButton.setAttribute("manifest", radio.value);
+      });
+    }
+  </script>
 
   <p class="note">
     Trouble connecting? Hold the frame's <strong>BOOT</strong> button while plugging

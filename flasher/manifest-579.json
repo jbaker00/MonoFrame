@@ -1,0 +1,13 @@
+{
+  "name": "MonoFrame (CrowPanel 5.79\")",
+  "version": "2.1.0",
+  "new_install_prompt_erase": true,
+  "builds": [
+    {
+      "chipFamily": "ESP32-S3",
+      "parts": [
+        { "path": "monoframe-fw-579.bin", "offset": 0 }
+      ]
+    }
+  ]
+}

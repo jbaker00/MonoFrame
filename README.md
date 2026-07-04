@@ -14,8 +14,8 @@ pictures and no service-account key ships in the app.
 |------------------|-----------------------------------|------------------------------------------|
 | iOS app          | `Sources/MonoFrame/`              | SwiftUI, iOS 17+, XcodeGen project       |
 | Backend          | `backend/functions/index.js`      | Firebase project `monoframe-app` (Blaze) |
-| Firmware         | `firmware/MonoFrameDisplay/`      | Elecrow CrowPanel ESP32-S3 4.2"          |
-| Web flasher      | `flasher/` (GitHub Pages)         | ESP Web Tools; `scripts/build_firmware.sh` regenerates `monoframe-fw.bin` |
+| Firmware         | `firmware/MonoFrameDisplay/`      | Elecrow CrowPanel ESP32-S3 4.2" & 5.79"  |
+| Web flasher      | `flasher/` (GitHub Pages)         | ESP Web Tools; `scripts/build_firmware.sh` regenerates `monoframe-fw-{42,579}.bin` |
 | Icon generator   | `scripts/make_icon.py`            | Regenerates the 1024px app icon          |
 
 ## How it works
@@ -71,7 +71,7 @@ firebase deploy --only functions --project monoframe-app
 ## Rebuild the flasher firmware
 
 ```bash
-scripts/build_firmware.sh   # arduino-cli compile + esptool merge → flasher/monoframe-fw.bin
+scripts/build_firmware.sh   # arduino-cli compile + esptool merge → flasher/monoframe-fw-{42,579}.bin
 ```
 
 The flasher page is served by GitHub Pages from `flasher/`.

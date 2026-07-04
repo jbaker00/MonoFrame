@@ -1,6 +1,8 @@
 # MonoFrameDisplay firmware
 
-Arduino sketch for the **Elecrow CrowPanel ESP32-S3 4.2" e-paper** (400×300 BW).
+Arduino sketch for the **Elecrow CrowPanel ESP32-S3 e-paper** boards: the
+4.2" (400×300 BW, default) and the 5.79" (792×272 BW — `#define PANEL_579`
+in `config.h`).
 Pairs with the MonoFrame iOS app: the app pushes a dithered 1-bit photo to the
 cloud, this sketch pulls it every 30 minutes and deep-sleeps in between.
 
@@ -51,7 +53,7 @@ Upload at 115200 baud — the ESP32-S3 in this CrowPanel drops the connection at
 While awake (setup mode or a normal wake) the frame advertises
 `_monoframe._tcp` over mDNS so the app's network scan can find it.
 
-## Pin map (CrowPanel ESP32-S3 4.2")
+## Pin map (identical on the 4.2" and 5.79" boards)
 
 | Signal | GPIO |
 |--------|------|

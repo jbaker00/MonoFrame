@@ -27,7 +27,7 @@
 
 #include "config.h"   // FRAME_BASE_URL (same for everyone)
 
-#define FW_VERSION "2.0.0"
+#define FW_VERSION "2.1.0"
 
 // CrowPanel ESP32-S3 4.2" pin mapping.
 #define EPD_PWR    7
