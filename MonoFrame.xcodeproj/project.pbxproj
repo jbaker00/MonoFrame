@@ -49,8 +49,8 @@
 		616A15FDFE60DE750A7E6616 /* AdManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdManager.swift; sourceTree = "<group>"; };
 		820BD066EC78ADABE177F8E4 /* SetupWizardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SetupWizardView.swift; sourceTree = "<group>"; };
 		92EDC66D07DF8E11D2235C83 /* monoframe-ota-579.bin */ = {isa = PBXFileReference; lastKnownFileType = archive.macbinary; path = "monoframe-ota-579.bin"; sourceTree = "<group>"; };
-		9BE08FD8CB69165ADEED3D46 /* MonoFrameUITests.xctest */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.cfbundle; path = MonoFrameUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		A7F50BC928F0CC8508CD0CBB /* MonoFrame.app */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.application; path = MonoFrame.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		9BE08FD8CB69165ADEED3D46 /* MonoFrameUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = MonoFrameUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		A7F50BC928F0CC8508CD0CBB /* MonoFrame.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MonoFrame.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		A8FDDA2E56C6E0393A15B9E1 /* FrameStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FrameStore.swift; sourceTree = "<group>"; };
 		C046C273624DD2F4DC2DD621 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		D6FBD7AFF405F6C997916267 /* DeviceClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeviceClient.swift; sourceTree = "<group>"; };
@@ -183,7 +183,7 @@
 			isa = PBXProject;
 			attributes = {
 				BuildIndependentTargetsInParallel = YES;
-				LastUpgradeCheck = 1500;
+				LastUpgradeCheck = 2640;
 				TargetAttributes = {
 					09DB959ACEDBDCD28CB72EE6 = {
 						DevelopmentTeam = G3P9A8Z2NP;
@@ -343,6 +343,7 @@
 				DEVELOPMENT_TEAM = G3P9A8Z2NP;
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
@@ -357,6 +358,7 @@
 				MTL_FAST_MATH = YES;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = iphoneos;
+				STRING_CATALOG_GENERATE_SYMBOLS = YES;
 				SWIFT_COMPILATION_MODE = wholemodule;
 				SWIFT_OPTIMIZATION_LEVEL = "-O";
 				SWIFT_VERSION = 5.9;
@@ -403,6 +405,7 @@
 				DEVELOPMENT_TEAM = G3P9A8Z2NP;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_NO_COMMON_BLOCKS = YES;
@@ -424,6 +427,7 @@
 				ONLY_ACTIVE_ARCH = YES;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = iphoneos;
+				STRING_CATALOG_GENERATE_SYMBOLS = YES;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.9;

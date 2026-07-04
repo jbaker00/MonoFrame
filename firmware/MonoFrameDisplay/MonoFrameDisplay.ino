@@ -29,7 +29,7 @@
 
 #include "config.h"   // FRAME_BASE_URL (same for everyone)
 
-#define FW_VERSION "2.2.0"
+#define FW_VERSION "2.3.0"
 
 // CrowPanel ESP32-S3 4.2" pin mapping.
 #define EPD_PWR    7
@@ -262,6 +262,8 @@ void deepSleepUntilNext() {
   // Leave EPD_PWR HIGH — toggling LOW puts the panel in a state that the next
   // boot's display.init() cannot fully recover from.
   esp_sleep_enable_timer_wakeup(SLEEP_MICROS);
+  // BOOT button (GPIO0, active low) = "sync now": wakes the frame immediately.
+  esp_sleep_enable_ext0_wakeup(GPIO_NUM_0, 0);
   esp_deep_sleep_start();
 }
 
