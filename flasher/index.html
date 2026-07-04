@@ -8,89 +8,163 @@
     :root { color-scheme: light dark; }
     body {
       font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-      max-width: 640px;
+      max-width: 680px;
       margin: 0 auto;
       padding: 2rem 1.25rem 4rem;
       line-height: 1.55;
     }
     h1 { letter-spacing: -0.02em; }
-    ol li { margin-bottom: 0.5rem; }
-    .flash-box {
-      margin: 2rem 0;
-      padding: 1.5rem;
+    h2 { margin-top: 2.2rem; }
+    ol li, ul li { margin-bottom: 0.5rem; }
+    code, pre {
+      font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+      font-size: 0.9em;
+      background: rgba(127, 127, 127, 0.15);
+      border-radius: 6px;
+    }
+    code { padding: 0.1em 0.35em; }
+    pre { padding: 0.9rem 1rem; overflow-x: auto; }
+    pre code { padding: 0; background: none; }
+    .params {
+      margin: 1.25rem 0;
+      padding: 1rem 1.25rem;
       border: 2px solid currentColor;
       border-radius: 12px;
-      text-align: center;
+    }
+    .params table { border-collapse: collapse; }
+    .params td { padding: 0.15rem 1.25rem 0.15rem 0; }
+    .download {
+      display: inline-block;
+      margin: 0.25rem 0.5rem 0.25rem 0;
+      padding: 0.6rem 1.1rem;
+      border: 2px solid currentColor;
+      border-radius: 10px;
+      font-weight: 600;
+      text-decoration: none;
+      color: inherit;
     }
     .note { font-size: 0.9rem; opacity: 0.75; }
-    .panel-picker {
-      border: none;
-      padding: 0;
-      margin: 0 0 1.25rem;
-      display: flex;
-      flex-direction: column;
-      gap: 0.4rem;
-      align-items: center;
+    details {
+      margin: 1rem 0;
+      padding: 0.75rem 1rem;
+      border: 1px solid rgba(127, 127, 127, 0.4);
+      border-radius: 10px;
     }
-    .panel-picker legend {
-      font-weight: 600;
-      margin-bottom: 0.5rem;
-    }
-    esp-web-install-button { --esp-tools-button-border-radius: 8px; }
+    summary { font-weight: 600; cursor: pointer; }
   </style>
-  <script type="module" src="https://unpkg.com/esp-web-tools@10/dist/web/install-button.js?module"></script>
 </head>
 <body>
   <h1>MonoFrame</h1>
   <p>
-    Flash the MonoFrame firmware onto your
-    <strong>Elecrow CrowPanel ESP32-S3 e-paper display</strong>
-    straight from this page — no software to install. You only do this once;
-    after that, the MonoFrame iOS app handles all setup over WiFi.
+    MonoFrame is an <a href="https://github.com/jbaker00/MonoFrame">open-source
+    (MIT)</a> e-ink picture frame. You flash the firmware onto your own frame
+    using a standard ESP32 flashing tool of your choice — this page shows you
+    how. You only do this once; after that, the MonoFrame iOS app handles all
+    setup and updates over WiFi.
+  </p>
+  <p class="note">
+    Flashing rewrites the frame's firmware and erases its settings. As with
+    any firmware flashing, you do this at your own risk — the software is
+    provided as-is, without warranty, per the
+    <a href="https://github.com/jbaker00/MonoFrame/blob/main/LICENSE">MIT license</a>.
   </p>
 
-  <h2>Steps</h2>
+  <h2>Supported frames</h2>
+  <ul>
+    <li><strong>Elecrow CrowPanel ESP32-S3 4.2&Prime;</strong> e-paper display (400 × 300)</li>
+    <li><strong>Elecrow CrowPanel ESP32-S3 5.79&Prime;</strong> e-paper display (792 × 272)</li>
+  </ul>
+  <p class="note">
+    Have a different e-ink frame you'd like supported?
+    <a href="https://github.com/jbaker00/MonoFrame/issues/new?template=frame-support-request.yml">
+    Request it here</a> — or add a 👍 to an existing request.
+  </p>
+
+  <h2>Step 1 — Download the firmware</h2>
+  <p>Grab the binary for your panel size from GitHub Releases:</p>
+  <p>
+    <a class="download" href="https://github.com/jbaker00/MonoFrame/releases/latest/download/monoframe-fw-42.bin">⬇ 4.2&Prime; firmware</a>
+    <a class="download" href="https://github.com/jbaker00/MonoFrame/releases/latest/download/monoframe-fw-579.bin">⬇ 5.79&Prime; firmware</a>
+  </p>
+  <p class="note">
+    All releases and checksums:
+    <a href="https://github.com/jbaker00/MonoFrame/releases">github.com/jbaker00/MonoFrame/releases</a>.
+    The binaries are complete images (bootloader + partition table + app), so
+    one file is all you need.
+  </p>
+
+  <h2>Step 2 — Flash it</h2>
+  <p>
+    Plug the frame into your computer with a <strong>USB-C data cable</strong>
+    (a charge-only cable won't work), then use whichever tool you prefer. The
+    parameters are the same everywhere:
+  </p>
+  <div class="params">
+    <table>
+      <tr><td>Chip</td><td><code>ESP32-S3</code></td></tr>
+      <tr><td>Flash offset</td><td><code>0x0</code></td></tr>
+      <tr><td>Baud rate</td><td><code>115200</code> (higher is often unreliable on these boards)</td></tr>
+    </table>
+  </div>
+
+  <details open>
+    <summary>Option A — In your browser (easiest)</summary>
+    <ol>
+      <li>Open <a href="https://adafruit.github.io/Adafruit_WebSerial_ESPTool/">Adafruit's WebSerial ESPTool</a>
+          in <strong>Chrome</strong> or <strong>Edge</strong> (Safari and phones won't work).</li>
+      <li>Set the baud rate to <strong>115200</strong> and click <strong>Connect</strong>,
+          then pick the USB serial port that appears.</li>
+      <li>In the first file row, click <strong>Choose a file…</strong> and select the
+          <code>monoframe-fw-*.bin</code> you downloaded. Set its offset to <strong>0x0</strong>.</li>
+      <li>Click <strong>Program</strong> and wait for it to finish (a couple of minutes).</li>
+    </ol>
+  </details>
+
+  <details>
+    <summary>Option B — Command line (esptool)</summary>
+    <ol>
+      <li>Install <a href="https://docs.espressif.com/projects/esptool/">esptool</a>:
+          <code>pip install esptool</code> (or <code>brew install esptool</code> on macOS).</li>
+      <li>Find your serial port: on macOS/Linux run <code>ls /dev/cu.usbserial* /dev/ttyUSB*</code>;
+          on Windows check Device Manager for the COM port.</li>
+      <li>Flash:
+<pre><code>esptool --chip esp32s3 -p YOUR_PORT -b 115200 write-flash 0x0 monoframe-fw-42.bin</code></pre>
+          (use <code>monoframe-fw-579.bin</code> for the 5.79&Prime; panel)</li>
+    </ol>
+  </details>
+
+  <details>
+    <summary>Option C — Windows GUI (Espressif Flash Download Tool)</summary>
+    <ol>
+      <li>Download the <a href="https://www.espressif.com/en/support/download/other-tools">Flash Download Tool</a> from Espressif.</li>
+      <li>Choose ChipType <strong>ESP32-S3</strong>, WorkMode <strong>Develop</strong>.</li>
+      <li>Add one row: your <code>monoframe-fw-*.bin</code> at address <strong>0x0</strong>, and tick its checkbox.</li>
+      <li>Set SPI SPEED <strong>40MHz</strong>, SPI MODE <strong>DIO</strong>, select your COM port, baud <strong>115200</strong>.</li>
+      <li>Click <strong>START</strong> and wait for FINISH.</li>
+    </ol>
+  </details>
+
+  <h2>Step 3 — Set it up</h2>
   <ol>
-    <li>Use <strong>Chrome</strong> or <strong>Edge</strong> on a computer (Safari and phones won't work).</li>
-    <li>Plug the frame into this computer with a <strong>USB-C data cable</strong>.</li>
-    <li>Pick your panel size below, click <strong>Connect</strong>, and choose the USB serial port that appears.</li>
-    <li>Click <strong>Install MonoFrame</strong> and wait for it to finish (about a minute).</li>
-    <li>Unplug the frame. Its screen will show <strong>Setup Mode</strong> — now open the
-        MonoFrame app on your iPhone and tap <em>My Frames → Add a Frame</em>.</li>
+    <li>Unplug the frame from the computer and power it on. Within a minute the
+        screen shows <strong>Setup Mode</strong> with a hotspot name and a WiFi code.</li>
+    <li>Open the MonoFrame app on your iPhone and tap
+        <em>My Frames → Add a Frame</em> — the app walks you through the rest.</li>
   </ol>
 
-  <div class="flash-box">
-    <fieldset class="panel-picker">
-      <legend>Which frame do you have?</legend>
-      <label>
-        <input type="radio" name="panel" value="manifest-42.json" checked>
-        CrowPanel 4.2&Prime; (400 × 300)
-      </label>
-      <label>
-        <input type="radio" name="panel" value="manifest-579.json">
-        CrowPanel 5.79&Prime; (792 × 272)
-      </label>
-    </fieldset>
-    <esp-web-install-button manifest="manifest-42.json"></esp-web-install-button>
-    <p class="note">If the button says your browser is unsupported, switch to Chrome or Edge.</p>
-  </div>
-  <script>
-    const installButton = document.querySelector("esp-web-install-button");
-    for (const radio of document.querySelectorAll('input[name="panel"]')) {
-      radio.addEventListener("change", () => {
-        installButton.setAttribute("manifest", radio.value);
-      });
-    }
-  </script>
+  <h2>Troubleshooting</h2>
+  <ul>
+    <li><strong>No serial port appears:</strong> your cable is probably
+        charge-only — try another USB-C cable.</li>
+    <li><strong>Tool can't connect to the chip:</strong> hold the frame's
+        <strong>BOOT</strong> button while plugging it in to force download
+        mode, then try again.</li>
+    <li><strong>Flashing fails partway:</strong> just run it again — a failed
+        flash is recovered by flashing again, and can't harm your computer.</li>
+  </ul>
 
   <p class="note">
-    Trouble connecting? Hold the frame's <strong>BOOT</strong> button while plugging
-    it in to force download mode, then try again. Flashing at most erases and
-    rewrites the frame's firmware — it can't harm your computer.
-  </p>
-
-  <p class="note">
-    MonoFrame is open source —
+    Source code, issues, and firmware releases:
     <a href="https://github.com/jbaker00/MonoFrame">github.com/jbaker00/MonoFrame</a>.
   </p>
 </body>

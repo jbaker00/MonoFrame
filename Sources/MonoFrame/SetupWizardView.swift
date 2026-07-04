@@ -37,6 +37,7 @@ struct SetupWizardView: View {
     @State private var ssid: String = ""
     @State private var password: String = ""
     @State private var frameCode: String = ""
+    @State private var hotspotName: String = ""
     @State private var frameName: String = ""
     @State private var errorText: String = ""
     @State private var isWorking = false
@@ -104,12 +105,12 @@ struct SetupWizardView: View {
     private var introStep: some View {
         VStack(alignment: .leading, spacing: 16) {
             Label {
-                Text("**Brand-new frame?** Flash it first: plug it into a computer with a USB-C cable and open our web flasher in Chrome or Edge — one click, no software to install.")
+                Text("**Brand-new frame?** Flash the MonoFrame firmware onto it first with a computer and a USB-C cable — our guide walks you through it step by step.")
             } icon: {
                 Image(systemName: "bolt.fill")
             }
             Link(destination: Self.flasherURL) {
-                Label("Open the web flasher", systemImage: "safari")
+                Label("Open the flashing guide", systemImage: "safari")
             }
             .font(.callout)
             .padding(.leading, 32)
@@ -160,14 +161,24 @@ struct SetupWizardView: View {
             } else {
                 Text("MonoFrame will ask to join your frame's WiFi hotspot. Nothing leaves your home network in this step.")
 
-                Text("Type the **WiFi code** shown on your frame's screen. (Frames with older software don't show one — leave this empty.)")
+                Text("Type the **hotspot name** and **WiFi code** shown on your frame's screen. (Frames with older software don't show a code — leave it empty.)")
                     .font(.callout)
-                TextField("WiFi code from the frame's screen", text: $frameCode)
-                    .textInputAutocapitalization(.never)
-                    .autocorrectionDisabled()
-                    .padding(12)
-                    .background(.gray.opacity(0.1))
-                    .clipShape(RoundedRectangle(cornerRadius: 10))
+                VStack(spacing: 0) {
+                    TextField("Hotspot name, e.g. MonoFrame-A1B2", text: $hotspotName)
+                        .textInputAutocapitalization(.never)
+                        .autocorrectionDisabled()
+                        .padding(12)
+                    Divider()
+                    TextField("WiFi code from the frame's screen", text: $frameCode)
+                        .textInputAutocapitalization(.never)
+                        .autocorrectionDisabled()
+                        .padding(12)
+                }
+                .background(.gray.opacity(0.1))
+                .clipShape(RoundedRectangle(cornerRadius: 10))
+                Text("Setting up several frames? The hotspot name makes sure we talk to the right one — or just power on one frame at a time.")
+                    .font(.footnote)
+                    .foregroundStyle(.secondary)
 
                 Button {
                     Task { await connectToDevice() }
@@ -321,7 +332,7 @@ struct SetupWizardView: View {
         }
 
         do {
-            try await HotspotJoiner.joinFrameHotspot(code: trimmedFrameCode)
+            try await HotspotJoiner.joinFrameHotspot(ssid: trimmedHotspotName, code: trimmedFrameCode)
         } catch {
             errorText = """
             Couldn't join automatically (\(error.localizedDescription)). \
@@ -371,7 +382,7 @@ struct SetupWizardView: View {
         workingMessage = "Frame is restarting with its new software…"
         try? await Task.sleep(for: .seconds(8))
         for _ in 0..<20 {
-            try? await HotspotJoiner.joinFrameHotspot(code: trimmedFrameCode)
+            try? await HotspotJoiner.joinFrameHotspot(ssid: trimmedHotspotName, code: trimmedFrameCode)
             if let info = try? await DeviceClient.info(),
                !FirmwareBundle.isOutdated(info.fw) {
                 return true
@@ -396,6 +407,16 @@ struct SetupWizardView: View {
 
     private var trimmedFrameCode: String {
         frameCode.trimmingCharacters(in: .whitespacesAndNewlines).lowercased()
+    }
+
+    // Accepts "MonoFrame-A1B2", "monoframe-a1b2", or just "A1B2".
+    private var trimmedHotspotName: String {
+        var name = hotspotName.trimmingCharacters(in: .whitespacesAndNewlines)
+        guard !name.isEmpty else { return "" }
+        if name.lowercased().hasPrefix("monoframe-") {
+            name = String(name.dropFirst("monoframe-".count))
+        }
+        return "MonoFrame-" + name.uppercased()
     }
 
     private func provision() async {
