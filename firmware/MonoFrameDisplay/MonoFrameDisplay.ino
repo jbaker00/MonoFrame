@@ -21,13 +21,15 @@
 #include <WebServer.h>
 #include <ESPmDNS.h>
 #include <Preferences.h>
+#include <esp_mac.h>
 
 #include <GxEPD2_BW.h>
 #include <Fonts/FreeSansBold9pt7b.h>
+#include <Update.h>
 
 #include "config.h"   // FRAME_BASE_URL (same for everyone)
 
-#define FW_VERSION "2.1.0"
+#define FW_VERSION "2.2.0"
 
 // CrowPanel ESP32-S3 4.2" pin mapping.
 #define EPD_PWR    7
@@ -82,8 +84,11 @@ struct FrameConfig {
 static FrameConfig gCfg;
 
 String deviceName() {
+  // Read the factory-burned MAC directly: WiFi.macAddress() returns junk
+  // until the WiFi stack is up, which made the name change between the
+  // screen, /info, and reboots.
   uint8_t mac[6];
-  WiFi.macAddress(mac);
+  esp_efuse_mac_get_default(mac);
   char buf[16];
   snprintf(buf, sizeof(buf), "MonoFrame-%02X%02X", mac[4], mac[5]);
   return String(buf);
@@ -291,8 +296,13 @@ WebServer server(80);
 static bool gProvisionedNow = false;
 
 void handleInfo() {
+  uint8_t mac[6];
+  esp_efuse_mac_get_default(mac);
+  char macStr[18];
+  snprintf(macStr, sizeof(macStr), "%02X:%02X:%02X:%02X:%02X:%02X",
+           mac[0], mac[1], mac[2], mac[3], mac[4], mac[5]);
   String json = String("{\"model\":\"" PANEL_MODEL "\",\"mac\":\"") +
-                WiFi.macAddress() + "\",\"fw\":\"" FW_VERSION "\"," +
+                macStr + "\",\"fw\":\"" FW_VERSION "\"," +
                 "\"name\":\"" + deviceName() + "\"," +
                 "\"provisioned\":" + (gCfg.provisioned() ? "true" : "false") + "}";
   server.send(200, "application/json", json);
@@ -316,6 +326,47 @@ void handleProvision() {
                 cfg.ssid.c_str(), cfg.frameId.c_str());
   server.send(200, "application/json", "{\"ok\":true}");
   gProvisionedNow = true;
+}
+
+// POST /update — multipart upload of a new app image, flashed over the air
+// with Update.h. Only reachable in setup mode (open AP, physical proximity),
+// same trust model as /provision. The phone is the only party involved.
+void handleUpdateUpload() {
+  HTTPUpload& up = server.upload();
+  if (up.status == UPLOAD_FILE_START) {
+    Serial.printf("OTA start: %s\n", up.filename.c_str());
+    if (!Update.begin(UPDATE_SIZE_UNKNOWN)) Update.printError(Serial);
+  } else if (up.status == UPLOAD_FILE_WRITE) {
+    if (Update.write(up.buf, up.currentSize) != up.currentSize) {
+      Update.printError(Serial);
+    }
+  } else if (up.status == UPLOAD_FILE_END) {
+    if (Update.end(true)) {
+      Serial.printf("OTA complete: %u bytes\n", (unsigned)up.totalSize);
+    } else {
+      Update.printError(Serial);
+    }
+  } else if (up.status == UPLOAD_FILE_ABORTED) {
+    Update.abort();
+    Serial.println("OTA aborted");
+  }
+}
+
+void handleUpdateDone() {
+  if (Update.hasError()) {
+    server.send(500, "application/json",
+                "{\"ok\":false,\"error\":\"update failed\"}");
+    return;
+  }
+  // Force the next boot back into setup mode (even on provisioned frames)
+  // so the app can reconnect and finish pairing on the new firmware.
+  // Provisioning resets the fail counter.
+  setFailCount(MAX_FAILS_BEFORE_SETUP);
+  server.send(200, "application/json", "{\"ok\":true}");
+  uint32_t flushUntil = millis() + 1500;
+  while (millis() < flushUntil) server.handleClient();
+  Serial.println("Rebooting into new firmware");
+  ESP.restart();
 }
 
 void runSetupMode() {
@@ -346,6 +397,7 @@ void runSetupMode() {
 
   server.on("/info", HTTP_GET, handleInfo);
   server.on("/provision", HTTP_POST, handleProvision);
+  server.on("/update", HTTP_POST, handleUpdateDone, handleUpdateUpload);
   server.onNotFound([]() { server.send(404, "text/plain", "not found"); });
   server.begin();
 

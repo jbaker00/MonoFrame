@@ -1,12 +1,15 @@
 {
   "name": "MonoFrame (CrowPanel 4.2\")",
-  "version": "2.1.0",
+  "version": "2.2.0",
   "new_install_prompt_erase": true,
   "builds": [
     {
       "chipFamily": "ESP32-S3",
       "parts": [
-        { "path": "monoframe-fw-42.bin", "offset": 0 }
+        {
+          "path": "monoframe-fw-42.bin",
+          "offset": 0
+        }
       ]
     }
   ]

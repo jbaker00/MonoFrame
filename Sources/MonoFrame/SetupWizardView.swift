@@ -39,6 +39,7 @@ struct SetupWizardView: View {
     @State private var frameName: String = ""
     @State private var errorText: String = ""
     @State private var isWorking = false
+    @State private var workingMessage = ""
     @State private var wizardStart = Date()
     @State private var confirmElapsed = 0
 
@@ -150,7 +151,9 @@ struct SetupWizardView: View {
             if isWorking {
                 HStack(spacing: 10) {
                     ProgressView()
-                    Text("Connecting to your frame's hotspot…")
+                    Text(workingMessage.isEmpty
+                         ? "Connecting to your frame's hotspot…"
+                         : workingMessage)
                         .foregroundStyle(.secondary)
                 }
             } else {
@@ -320,6 +323,10 @@ struct SetupWizardView: View {
                 deviceName = info.name
                 deviceModel = DeviceModel(infoModel: info.model)
                 errorText = ""
+                if FirmwareBundle.isOutdated(info.fw),
+                   let image = FirmwareBundle.otaImage(for: deviceModel) {
+                    guard await updateFrameFirmware(image) else { return }
+                }
                 step = .wifi
                 return
             }
@@ -332,6 +339,38 @@ struct SetupWizardView: View {
             Setup Mode, then try again.
             """
         }
+    }
+
+    // Pushes the firmware bundled in the app to the frame over its hotspot —
+    // phone to frame only, no internet or computer involved. The frame
+    // reboots back into setup mode, so we rejoin and wait for it.
+    private func updateFrameFirmware(_ image: Data) async -> Bool {
+        workingMessage = "Updating your frame's software — keep it plugged in…"
+        defer { workingMessage = "" }
+        do {
+            try await DeviceClient.updateFirmware(image)
+        } catch {
+            errorText = """
+            Software update failed: \(error.localizedDescription) \
+            Tap Connect to Frame to try again.
+            """
+            return false
+        }
+        workingMessage = "Frame is restarting with its new software…"
+        try? await Task.sleep(for: .seconds(8))
+        for _ in 0..<20 {
+            try? await HotspotJoiner.joinFrameHotspot()
+            if let info = try? await DeviceClient.info(),
+               !FirmwareBundle.isOutdated(info.fw) {
+                return true
+            }
+            try? await Task.sleep(for: .seconds(3))
+        }
+        errorText = """
+        The frame didn't reappear after the update. Power-cycle it, wait for \
+        Setup Mode, then tap Connect to Frame again.
+        """
+        return false
     }
 
     private func provision() async {

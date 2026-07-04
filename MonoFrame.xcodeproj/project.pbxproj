@@ -11,6 +11,7 @@
 		07EBD3862BDFA106AFB4F635 /* AdManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 616A15FDFE60DE750A7E6616 /* AdManager.swift */; };
 		107A133F7B8B30B2229E6090 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 1B62D73737DFE666F2354B2D /* Assets.xcassets */; };
 		128B6209B763AAE050C28D8A /* ScreenshotTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49CB5F8A2A16109D9AD13366 /* ScreenshotTests.swift */; };
+		1BB8AB4FEBE456B092194881 /* monoframe-ota-579.bin in Resources */ = {isa = PBXBuildFile; fileRef = 92EDC66D07DF8E11D2235C83 /* monoframe-ota-579.bin */; };
 		1EF280DE5C22CD751A5622FF /* GoogleMobileAds in Frameworks */ = {isa = PBXBuildFile; productRef = CD6A64F1C7C35C975DCF5CC4 /* GoogleMobileAds */; };
 		1FC6DE5EBA1C8D686D9058AC /* DeviceModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 317BCC55BDB69F1C7E822C82 /* DeviceModel.swift */; };
 		2E6CAA41FC9C14134225190C /* DeviceClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6FBD7AFF405F6C997916267 /* DeviceClient.swift */; };
@@ -19,7 +20,10 @@
 		670E84CD2204764D61025017 /* SetupWizardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 820BD066EC78ADABE177F8E4 /* SetupWizardView.swift */; };
 		917AA39BBA3F0E14479D6615 /* MonoFrameApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E30FBBDC9C13F7A553AFBF9 /* MonoFrameApp.swift */; };
 		9D800C5472B053C166FD4F73 /* FrameService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 376CFC2A0A421A07C2BEC795 /* FrameService.swift */; };
+		BBA44598373F0A77C23AA69A /* monoframe-ota-42.bin in Resources */ = {isa = PBXBuildFile; fileRef = E74497B40EE24BCE1601B090 /* monoframe-ota-42.bin */; };
 		D41D8AA67E7707BB62413F16 /* FramesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 09A48C36559B60EF42539337 /* FramesView.swift */; };
+		DD5E20D01E05845152B15B59 /* version.txt in Resources */ = {isa = PBXBuildFile; fileRef = 218FD25F0440D66A8F476016 /* version.txt */; };
+		FE5A87907E8F224259291C21 /* FirmwareBundle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 409E8D2218E590696BDDDD58 /* FirmwareBundle.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -35,18 +39,22 @@
 /* Begin PBXFileReference section */
 		09A48C36559B60EF42539337 /* FramesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FramesView.swift; sourceTree = "<group>"; };
 		1B62D73737DFE666F2354B2D /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		218FD25F0440D66A8F476016 /* version.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = version.txt; sourceTree = "<group>"; };
 		21ED6565E828E961E292F678 /* EinkConverter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EinkConverter.swift; sourceTree = "<group>"; };
 		317BCC55BDB69F1C7E822C82 /* DeviceModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeviceModel.swift; sourceTree = "<group>"; };
 		376CFC2A0A421A07C2BEC795 /* FrameService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FrameService.swift; sourceTree = "<group>"; };
+		409E8D2218E590696BDDDD58 /* FirmwareBundle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirmwareBundle.swift; sourceTree = "<group>"; };
 		49CB5F8A2A16109D9AD13366 /* ScreenshotTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScreenshotTests.swift; sourceTree = "<group>"; };
 		4E30FBBDC9C13F7A553AFBF9 /* MonoFrameApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MonoFrameApp.swift; sourceTree = "<group>"; };
 		616A15FDFE60DE750A7E6616 /* AdManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdManager.swift; sourceTree = "<group>"; };
 		820BD066EC78ADABE177F8E4 /* SetupWizardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SetupWizardView.swift; sourceTree = "<group>"; };
+		92EDC66D07DF8E11D2235C83 /* monoframe-ota-579.bin */ = {isa = PBXFileReference; lastKnownFileType = archive.macbinary; path = "monoframe-ota-579.bin"; sourceTree = "<group>"; };
 		9BE08FD8CB69165ADEED3D46 /* MonoFrameUITests.xctest */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.cfbundle; path = MonoFrameUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		A7F50BC928F0CC8508CD0CBB /* MonoFrame.app */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.application; path = MonoFrame.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		A8FDDA2E56C6E0393A15B9E1 /* FrameStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FrameStore.swift; sourceTree = "<group>"; };
 		C046C273624DD2F4DC2DD621 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		D6FBD7AFF405F6C997916267 /* DeviceClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeviceClient.swift; sourceTree = "<group>"; };
+		E74497B40EE24BCE1601B090 /* monoframe-ota-42.bin */ = {isa = PBXFileReference; lastKnownFileType = archive.macbinary; path = "monoframe-ota-42.bin"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -74,6 +82,7 @@
 			isa = PBXGroup;
 			children = (
 				1B62D73737DFE666F2354B2D /* Assets.xcassets */,
+				B81602F7D177736C1B31E3E1 /* Firmware */,
 			);
 			path = Resources;
 			sourceTree = "<group>";
@@ -86,6 +95,7 @@
 				D6FBD7AFF405F6C997916267 /* DeviceClient.swift */,
 				317BCC55BDB69F1C7E822C82 /* DeviceModel.swift */,
 				21ED6565E828E961E292F678 /* EinkConverter.swift */,
+				409E8D2218E590696BDDDD58 /* FirmwareBundle.swift */,
 				376CFC2A0A421A07C2BEC795 /* FrameService.swift */,
 				A8FDDA2E56C6E0393A15B9E1 /* FrameStore.swift */,
 				09A48C36559B60EF42539337 /* FramesView.swift */,
@@ -95,6 +105,16 @@
 			);
 			name = MonoFrame;
 			path = Sources/MonoFrame;
+			sourceTree = "<group>";
+		};
+		B81602F7D177736C1B31E3E1 /* Firmware */ = {
+			isa = PBXGroup;
+			children = (
+				E74497B40EE24BCE1601B090 /* monoframe-ota-42.bin */,
+				92EDC66D07DF8E11D2235C83 /* monoframe-ota-579.bin */,
+				218FD25F0440D66A8F476016 /* version.txt */,
+			);
+			path = Firmware;
 			sourceTree = "<group>";
 		};
 		D97FD166C1085CE90566C5E3 /* Products */ = {
@@ -205,6 +225,9 @@
 			buildActionMask = 2147483647;
 			files = (
 				107A133F7B8B30B2229E6090 /* Assets.xcassets in Resources */,
+				BBA44598373F0A77C23AA69A /* monoframe-ota-42.bin in Resources */,
+				1BB8AB4FEBE456B092194881 /* monoframe-ota-579.bin in Resources */,
+				DD5E20D01E05845152B15B59 /* version.txt in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -228,6 +251,7 @@
 				2E6CAA41FC9C14134225190C /* DeviceClient.swift in Sources */,
 				1FC6DE5EBA1C8D686D9058AC /* DeviceModel.swift in Sources */,
 				41C9A21DA59A092CEF6266EB /* EinkConverter.swift in Sources */,
+				FE5A87907E8F224259291C21 /* FirmwareBundle.swift in Sources */,
 				9D800C5472B053C166FD4F73 /* FrameService.swift in Sources */,
 				059250EEF9F154084B0F1747 /* FrameStore.swift in Sources */,
 				D41D8AA67E7707BB62413F16 /* FramesView.swift in Sources */,

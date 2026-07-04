@@ -49,6 +49,35 @@ enum DeviceClient {
         }
     }
 
+    // Streams a new firmware image to the frame's /update endpoint. Slow
+    // (~1.2 MB over the SoftAP) — the frame reboots itself on success.
+    static func updateFirmware(_ image: Data) async throws {
+        let boundary = "monoframe-\(UUID().uuidString)"
+        var req = URLRequest(url: URL(string: "\(host)/update")!)
+        req.httpMethod = "POST"
+        req.timeoutInterval = 180
+        req.setValue("multipart/form-data; boundary=\(boundary)",
+                     forHTTPHeaderField: "Content-Type")
+
+        var body = Data()
+        body.append(Data("""
+        --\(boundary)\r
+        Content-Disposition: form-data; name="firmware"; filename="firmware.bin"\r
+        Content-Type: application/octet-stream\r
+        \r\n
+        """.utf8))
+        body.append(image)
+        body.append(Data("\r\n--\(boundary)--\r\n".utf8))
+
+        let (data, resp) = try await session.upload(for: req, from: body)
+        guard (resp as? HTTPURLResponse)?.statusCode == 200 else {
+            let text = String(data: data, encoding: .utf8) ?? ""
+            throw NSError(domain: "DeviceClient", code: 2, userInfo: [
+                NSLocalizedDescriptionKey: "Frame rejected the update: \(text)",
+            ])
+        }
+    }
+
     private static func formEncode(_ params: [String: String]) -> Data {
         var allowed = CharacterSet.alphanumerics
         allowed.insert(charactersIn: "-._~")

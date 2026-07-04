@@ -1,11 +1,13 @@
 #!/usr/bin/env bash
-# Builds the MonoFrameDisplay firmware for each supported panel and merges
-# each into a single flasher/monoframe-fw-<panel>.bin for the ESP Web Tools
-# flasher page.
+# Builds the MonoFrameDisplay firmware for each supported panel and produces:
+#  - flasher/monoframe-fw-<panel>.bin        merged image for the web flasher
+#  - Sources/MonoFrame/Resources/Firmware/   app-only OTA image the iOS app
+#    monoframe-ota-<panel>.bin + version.txt pushes to frames over WiFi
 set -euo pipefail
 
 REPO="$(cd "$(dirname "$0")/.." && pwd)"
 SKETCH="$REPO/firmware/MonoFrameDisplay"
+OTA_DIR="$REPO/Sources/MonoFrame/Resources/Firmware"
 FQBN="esp32:esp32:esp32s3:PSRAM=opi,FlashSize=8M,PartitionScheme=min_spiffs"
 
 [ -f "$SKETCH/config.h" ] || cp "$SKETCH/config.h.template" "$SKETCH/config.h"
@@ -38,7 +40,15 @@ build_variant() {
     0x10000 "$build/MonoFrameDisplay.ino.bin"
 
   echo "Wrote $out ($(stat -f %z "$out") bytes)"
+
+  mkdir -p "$OTA_DIR"
+  cp "$build/MonoFrameDisplay.ino.bin" "$OTA_DIR/monoframe-ota-$panel.bin"
+  echo "Wrote $OTA_DIR/monoframe-ota-$panel.bin"
 }
 
 build_variant 42 ""
 build_variant 579 "-DPANEL_579"
+
+sed -n 's/^#define FW_VERSION "\(.*\)"$/\1/p' "$SKETCH/MonoFrameDisplay.ino" \
+  > "$OTA_DIR/version.txt"
+echo "Firmware version: $(cat "$OTA_DIR/version.txt")"
