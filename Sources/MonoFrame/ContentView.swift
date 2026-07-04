@@ -9,7 +9,6 @@ struct ContentView: View {
     @State private var isBusy = false
     @State private var showFrames = false
 
-    @EnvironmentObject private var ads: AdsManager
     @EnvironmentObject private var store: FrameStore
 
     var body: some View {
@@ -58,7 +57,6 @@ struct ContentView: View {
                         .buttonStyle(.borderedProminent)
                     } else {
                         Button {
-                            ads.showInterstitial()
                             Task { await send(to: store.selectedFrame.map { [$0] } ?? []) }
                         } label: {
                             Group {
@@ -76,7 +74,6 @@ struct ContentView: View {
 
                         if store.frames.count > 1 {
                             Button {
-                                ads.showInterstitial()
                                 Task { await send(to: store.frames) }
                             } label: {
                                 Label("Send to All Frames", systemImage: "paperplane")
@@ -110,9 +107,6 @@ struct ContentView: View {
             }
             .sheet(isPresented: $showFrames) {
                 FramesView()
-            }
-            .safeAreaInset(edge: .bottom) {
-                BannerAdContainer()
             }
         }
     }

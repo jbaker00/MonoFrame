@@ -13,11 +13,6 @@ settings:
     DEVELOPMENT_TEAM: "G3P9A8Z2NP"
     CODE_SIGN_STYLE: Automatic
 
-packages:
-  GoogleMobileAds:
-    url: https://github.com/googleads/swift-package-manager-google-mobile-ads
-    from: 11.0.0
-
 targets:
   MonoFrame:
     type: application
@@ -27,8 +22,6 @@ targets:
         excludes:
           - Resources/Info.plist
           - Resources/MonoFrame.entitlements
-    dependencies:
-      - package: GoogleMobileAds
     settings:
       base:
         PRODUCT_BUNDLE_IDENTIFIER: com.jamesbaker.MonoFrame

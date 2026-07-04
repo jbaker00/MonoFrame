@@ -1,0 +1,40 @@
+name: Frame support request
+description: Ask for a new e-ink frame or panel to be supported by MonoFrame
+title: "[Frame request] "
+labels: ["frame-request"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for your interest in MonoFrame! Fill in what you know about the
+        frame you'd like supported. If a request for the same frame already
+        exists, please add a 👍 to it instead of opening a new one.
+  - type: input
+    id: frame-name
+    attributes:
+      label: Frame / panel name
+      description: Manufacturer and model, e.g. "ELECROW CrowPanel 5.79" or "Waveshare 7.5inch e-Paper HAT"
+      placeholder: Manufacturer + model
+    validations:
+      required: true
+  - type: input
+    id: product-link
+    attributes:
+      label: Product link
+      description: A link to the product page, if you have one
+    validations:
+      required: false
+  - type: input
+    id: resolution
+    attributes:
+      label: Resolution and colors
+      description: e.g. "792×272, black/white" — check the product page if unsure
+    validations:
+      required: false
+  - type: textarea
+    id: details
+    attributes:
+      label: Anything else?
+      description: What chip it uses (ESP32?), whether you already own it, anything else useful
+    validations:
+      required: false

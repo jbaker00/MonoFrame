@@ -8,11 +8,9 @@
 
 /* Begin PBXBuildFile section */
 		059250EEF9F154084B0F1747 /* FrameStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = A8FDDA2E56C6E0393A15B9E1 /* FrameStore.swift */; };
-		07EBD3862BDFA106AFB4F635 /* AdManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 616A15FDFE60DE750A7E6616 /* AdManager.swift */; };
 		107A133F7B8B30B2229E6090 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 1B62D73737DFE666F2354B2D /* Assets.xcassets */; };
 		128B6209B763AAE050C28D8A /* ScreenshotTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49CB5F8A2A16109D9AD13366 /* ScreenshotTests.swift */; };
 		1BB8AB4FEBE456B092194881 /* monoframe-ota-579.bin in Resources */ = {isa = PBXBuildFile; fileRef = 92EDC66D07DF8E11D2235C83 /* monoframe-ota-579.bin */; };
-		1EF280DE5C22CD751A5622FF /* GoogleMobileAds in Frameworks */ = {isa = PBXBuildFile; productRef = CD6A64F1C7C35C975DCF5CC4 /* GoogleMobileAds */; };
 		1FC6DE5EBA1C8D686D9058AC /* DeviceModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 317BCC55BDB69F1C7E822C82 /* DeviceModel.swift */; };
 		2E6CAA41FC9C14134225190C /* DeviceClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6FBD7AFF405F6C997916267 /* DeviceClient.swift */; };
 		41C9A21DA59A092CEF6266EB /* EinkConverter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21ED6565E828E961E292F678 /* EinkConverter.swift */; };
@@ -46,27 +44,15 @@
 		409E8D2218E590696BDDDD58 /* FirmwareBundle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirmwareBundle.swift; sourceTree = "<group>"; };
 		49CB5F8A2A16109D9AD13366 /* ScreenshotTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScreenshotTests.swift; sourceTree = "<group>"; };
 		4E30FBBDC9C13F7A553AFBF9 /* MonoFrameApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MonoFrameApp.swift; sourceTree = "<group>"; };
-		616A15FDFE60DE750A7E6616 /* AdManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdManager.swift; sourceTree = "<group>"; };
 		820BD066EC78ADABE177F8E4 /* SetupWizardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SetupWizardView.swift; sourceTree = "<group>"; };
 		92EDC66D07DF8E11D2235C83 /* monoframe-ota-579.bin */ = {isa = PBXFileReference; lastKnownFileType = archive.macbinary; path = "monoframe-ota-579.bin"; sourceTree = "<group>"; };
-		9BE08FD8CB69165ADEED3D46 /* MonoFrameUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = MonoFrameUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		A7F50BC928F0CC8508CD0CBB /* MonoFrame.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MonoFrame.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		9BE08FD8CB69165ADEED3D46 /* MonoFrameUITests.xctest */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.cfbundle; path = MonoFrameUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		A7F50BC928F0CC8508CD0CBB /* MonoFrame.app */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.application; path = MonoFrame.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		A8FDDA2E56C6E0393A15B9E1 /* FrameStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FrameStore.swift; sourceTree = "<group>"; };
 		C046C273624DD2F4DC2DD621 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		D6FBD7AFF405F6C997916267 /* DeviceClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeviceClient.swift; sourceTree = "<group>"; };
 		E74497B40EE24BCE1601B090 /* monoframe-ota-42.bin */ = {isa = PBXFileReference; lastKnownFileType = archive.macbinary; path = "monoframe-ota-42.bin"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
-
-/* Begin PBXFrameworksBuildPhase section */
-		01300C523F5B64AA1E4B8AE3 /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				1EF280DE5C22CD751A5622FF /* GoogleMobileAds in Frameworks */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-/* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
 		0A6B903D4B4F1E58E43678AC /* MonoFrameUITests */ = {
@@ -90,7 +76,6 @@
 		72C089DF31104D7971551BE4 /* MonoFrame */ = {
 			isa = PBXGroup;
 			children = (
-				616A15FDFE60DE750A7E6616 /* AdManager.swift */,
 				C046C273624DD2F4DC2DD621 /* ContentView.swift */,
 				D6FBD7AFF405F6C997916267 /* DeviceClient.swift */,
 				317BCC55BDB69F1C7E822C82 /* DeviceModel.swift */,
@@ -162,7 +147,6 @@
 			buildPhases = (
 				0FD61F293AF0BAE8F86D6C59 /* Sources */,
 				6F0A72310B63CC9CD3D32E31 /* Resources */,
-				01300C523F5B64AA1E4B8AE3 /* Frameworks */,
 			);
 			buildRules = (
 			);
@@ -170,7 +154,6 @@
 			);
 			name = MonoFrame;
 			packageProductDependencies = (
-				CD6A64F1C7C35C975DCF5CC4 /* GoogleMobileAds */,
 			);
 			productName = MonoFrame;
 			productReference = A7F50BC928F0CC8508CD0CBB /* MonoFrame.app */;
@@ -183,7 +166,7 @@
 			isa = PBXProject;
 			attributes = {
 				BuildIndependentTargetsInParallel = YES;
-				LastUpgradeCheck = 2640;
+				LastUpgradeCheck = 1500;
 				TargetAttributes = {
 					09DB959ACEDBDCD28CB72EE6 = {
 						DevelopmentTeam = G3P9A8Z2NP;
@@ -205,9 +188,6 @@
 			);
 			mainGroup = DEBC6748051643D477C3619F;
 			minimizedProjectReferenceProxies = 1;
-			packageReferences = (
-				954468028BA05EF59E1EA34A /* XCRemoteSwiftPackageReference "swift-package-manager-google-mobile-ads" */,
-			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = D97FD166C1085CE90566C5E3 /* Products */;
 			projectDirPath = "";
@@ -246,7 +226,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				07EBD3862BDFA106AFB4F635 /* AdManager.swift in Sources */,
 				5E29F97FB8B58F8C8B2051CC /* ContentView.swift in Sources */,
 				2E6CAA41FC9C14134225190C /* DeviceClient.swift in Sources */,
 				1FC6DE5EBA1C8D686D9058AC /* DeviceModel.swift in Sources */,
@@ -343,7 +322,6 @@
 				DEVELOPMENT_TEAM = G3P9A8Z2NP;
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
-				ENABLE_USER_SCRIPT_SANDBOXING = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
@@ -358,7 +336,6 @@
 				MTL_FAST_MATH = YES;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = iphoneos;
-				STRING_CATALOG_GENERATE_SYMBOLS = YES;
 				SWIFT_COMPILATION_MODE = wholemodule;
 				SWIFT_OPTIMIZATION_LEVEL = "-O";
 				SWIFT_VERSION = 5.9;
@@ -405,7 +382,6 @@
 				DEVELOPMENT_TEAM = G3P9A8Z2NP;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
-				ENABLE_USER_SCRIPT_SANDBOXING = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_NO_COMMON_BLOCKS = YES;
@@ -427,7 +403,6 @@
 				ONLY_ACTIVE_ARCH = YES;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = iphoneos;
-				STRING_CATALOG_GENERATE_SYMBOLS = YES;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.9;
@@ -499,25 +474,6 @@
 			defaultConfigurationName = Debug;
 		};
 /* End XCConfigurationList section */
-
-/* Begin XCRemoteSwiftPackageReference section */
-		954468028BA05EF59E1EA34A /* XCRemoteSwiftPackageReference "swift-package-manager-google-mobile-ads" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/googleads/swift-package-manager-google-mobile-ads";
-			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 11.0.0;
-			};
-		};
-/* End XCRemoteSwiftPackageReference section */
-
-/* Begin XCSwiftPackageProductDependency section */
-		CD6A64F1C7C35C975DCF5CC4 /* GoogleMobileAds */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 954468028BA05EF59E1EA34A /* XCRemoteSwiftPackageReference "swift-package-manager-google-mobile-ads" */;
-			productName = GoogleMobileAds;
-		};
-/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 4AC912DF6D151848E14AC1E8 /* Project object */;
 }
