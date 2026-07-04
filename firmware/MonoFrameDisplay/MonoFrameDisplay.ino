@@ -1,5 +1,7 @@
-// MonoFrameDisplay — CrowPanel ESP32-S3 e-paper picture frame. Supports the
-// 4.2" (400x300, default) and 5.79" (792x272, #define PANEL_579) BW panels.
+// MonoFrameDisplay — ESP32-S3 e-paper picture frame. Supported panels:
+//   - Elecrow CrowPanel 4.2"  (400x300, default)
+//   - Elecrow CrowPanel 5.79" (792x272, #define PANEL_579)
+//   - Seeed reTerminal E1001 7.5" (800x480, #define PANEL_E1001)
 // Wakes every 30 minutes, fetches the latest 1-bit bitmap for YOUR frame
 // from the MonoFrame backend, draws it, and deep-sleeps.
 //
@@ -12,7 +14,8 @@
 // Required Arduino libraries:
 //   - GxEPD2          (Jean-Marc Zingg)
 //   - Adafruit GFX
-// Board: ESP32S3 Dev Module (Elecrow CrowPanel ESP32-S3 4.2" / 5.79").
+// Board: ESP32S3 Dev Module. Build with scripts/build_firmware.sh, which
+// sets the per-panel flags (PANEL_579, PANEL_E1001, USB-CDC for the E1001).
 
 #include <Arduino.h>
 #include <WiFi.h>
@@ -22,6 +25,7 @@
 #include <ESPmDNS.h>
 #include <Preferences.h>
 #include <esp_mac.h>
+#include <driver/rtc_io.h>
 
 #include <GxEPD2_BW.h>
 #include <Fonts/FreeSansBold9pt7b.h>
@@ -30,9 +34,28 @@
 #include "config.h"   // FRAME_BASE_URL (same for everyone)
 #include "gts_roots.h"
 
-#define FW_VERSION "2.4.0"
+#define FW_VERSION "2.5.0"
 
-// CrowPanel ESP32-S3 4.2" pin mapping.
+#if defined(PANEL_E1001)
+// Seeed reTerminal E1001 (XIAO ESP32-S3): GDEY075T7 panel, UC8179 driver.
+// No panel power pin; the "sync now" wake button is the top Refresh key.
+#define EPD_SCK    7
+#define EPD_MOSI   9
+#define EPD_CS    10
+#define EPD_DC    11
+#define EPD_RST   12
+#define EPD_BUSY  13
+#define WAKE_GPIO GPIO_NUM_3   // Refresh button, active low
+
+GxEPD2_BW<GxEPD2_750_GDEY075T7, GxEPD2_750_GDEY075T7::HEIGHT> display(
+    GxEPD2_750_GDEY075T7(EPD_CS, EPD_DC, EPD_RST, EPD_BUSY));
+
+constexpr int  PANEL_W = 800;
+constexpr int  PANEL_H = 480;
+#define PANEL_MODEL "reterminal-e1001"
+#else
+// Both CrowPanel boards share the pin mapping; the panel driver and geometry
+// differ. Define PANEL_579 in config.h to build for the 5.79" (792x272) panel.
 #define EPD_PWR    7
 #define EPD_MOSI  11
 #define EPD_SCK   12
@@ -40,9 +63,8 @@
 #define EPD_DC    46
 #define EPD_RST   47
 #define EPD_BUSY  48
+#define WAKE_GPIO GPIO_NUM_0   // BOOT button, active low
 
-// Both CrowPanel boards share the pin mapping; the panel driver and geometry
-// differ. Define PANEL_579 in config.h to build for the 5.79" (792x272) panel.
 #if defined(PANEL_579)
 GxEPD2_BW<GxEPD2_579_GDEY0579T93, GxEPD2_579_GDEY0579T93::HEIGHT> display(
     GxEPD2_579_GDEY0579T93(EPD_CS, EPD_DC, EPD_RST, EPD_BUSY));
@@ -57,6 +79,7 @@ GxEPD2_BW<GxEPD2_420_GDEY042T81, GxEPD2_420_GDEY042T81::HEIGHT> display(
 constexpr int  PANEL_W = 400;
 constexpr int  PANEL_H = 300;
 #define PANEL_MODEL "crowpanel-4.2"
+#endif
 #endif
 constexpr int  IMG_BYTES = PANEL_W * PANEL_H / 8;
 constexpr uint64_t SLEEP_MICROS = 30ULL * 60ULL * 1000000ULL;   // 30 min
@@ -278,8 +301,12 @@ void deepSleepUntilNext() {
   // Leave EPD_PWR HIGH — toggling LOW puts the panel in a state that the next
   // boot's display.init() cannot fully recover from.
   esp_sleep_enable_timer_wakeup(SLEEP_MICROS);
-  // BOOT button (GPIO0, active low) = "sync now": wakes the frame immediately.
-  esp_sleep_enable_ext0_wakeup(GPIO_NUM_0, 0);
+  // Button press (active low) = "sync now": wakes the frame immediately.
+  // Internal RTC pull-up keeps the pin high in deep sleep on boards without
+  // an external pull-up on the wake button.
+  rtc_gpio_pullup_en(WAKE_GPIO);
+  rtc_gpio_pulldown_dis(WAKE_GPIO);
+  esp_sleep_enable_ext0_wakeup(WAKE_GPIO, 0);
   esp_deep_sleep_start();
 }
 
@@ -469,9 +496,11 @@ void setup() {
   delay(150);
   Serial.println("\nMonoFrameDisplay boot v" FW_VERSION);
 
+#ifdef EPD_PWR
   pinMode(EPD_PWR, OUTPUT);
   digitalWrite(EPD_PWR, HIGH);
   delay(100);
+#endif
 
   SPI.begin(EPD_SCK, -1, EPD_MOSI, EPD_CS);
   display.init(115200, true, 10, false);

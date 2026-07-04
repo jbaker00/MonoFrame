@@ -250,7 +250,7 @@ struct SetupWizardView: View {
         VStack(alignment: .leading, spacing: 16) {
             HStack(spacing: 10) {
                 ProgressView()
-                Text("Your frame is restarting and joining your WiFi… (\(confirmElapsed)s) Tip: pressing the button on the back of the frame wakes it right away.")
+                Text("Your frame is restarting and joining your WiFi… (\(confirmElapsed)s) Tip: pressing \(deviceModel.syncButtonHint) of the frame wakes it right away.")
                     .foregroundStyle(.secondary)
             }
             if confirmElapsed > 45 {

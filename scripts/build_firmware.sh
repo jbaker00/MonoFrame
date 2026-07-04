@@ -22,11 +22,11 @@ if [ -z "$ESPTOOL" ]; then
 fi
 
 build_variant() {
-  local panel="$1" extra_flags="$2"
+  local panel="$1" extra_flags="$2" fqbn_extra="${3:-}"
   local out="$REPO/flasher/monoframe-fw-$panel.bin"
 
   echo "== Compiling ($panel) =="
-  arduino-cli compile --fqbn "$FQBN" --export-binaries \
+  arduino-cli compile --fqbn "$FQBN$fqbn_extra" --export-binaries \
     --build-property "compiler.cpp.extra_flags=$extra_flags" "$SKETCH"
 
   local build="$SKETCH/build/esp32.esp32.esp32s3"
@@ -48,6 +48,9 @@ build_variant() {
 
 build_variant 42 ""
 build_variant 579 "-DPANEL_579"
+# reTerminal E1001 is XIAO ESP32-S3 based: native USB needs CDC-on-boot for
+# serial logs; its 32MB flash boots the same 8MB-layout image fine.
+build_variant e1001 "-DPANEL_E1001" ",CDCOnBoot=cdc"
 
 sed -n 's/^#define FW_VERSION "\(.*\)"$/\1/p' "$SKETCH/MonoFrameDisplay.ino" \
   > "$OTA_DIR/version.txt"

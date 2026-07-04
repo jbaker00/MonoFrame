@@ -6,6 +6,7 @@ import Foundation
 enum DeviceModel: String, Codable, CaseIterable, Identifiable {
     case crowPanel42 = "crowpanel-4.2"
     case crowPanel579 = "crowpanel-5.79"
+    case reTerminalE1001 = "reterminal-e1001"
 
     var id: String { rawValue }
 
@@ -13,6 +14,7 @@ enum DeviceModel: String, Codable, CaseIterable, Identifiable {
         switch self {
         case .crowPanel42: 400
         case .crowPanel579: 792
+        case .reTerminalE1001: 800
         }
     }
 
@@ -20,6 +22,7 @@ enum DeviceModel: String, Codable, CaseIterable, Identifiable {
         switch self {
         case .crowPanel42: 300
         case .crowPanel579: 272
+        case .reTerminalE1001: 480
         }
     }
 
@@ -29,10 +32,19 @@ enum DeviceModel: String, Codable, CaseIterable, Identifiable {
         switch self {
         case .crowPanel42: "CrowPanel 4.2\""
         case .crowPanel579: "CrowPanel 5.79\""
+        case .reTerminalE1001: "reTerminal E1001 7.5\""
         }
     }
 
     var resolutionText: String { "\(width) × \(height)  ·  black & white" }
+
+    // The "sync now" button, described the way a user would find it.
+    var syncButtonHint: String {
+        switch self {
+        case .crowPanel42, .crowPanel579: "the button on the back"
+        case .reTerminalE1001: "the top button"
+        }
+    }
 
     // Unknown strings (newer firmware than app) fall back to the original
     // panel rather than failing the whole pairing or decode.

@@ -18,16 +18,17 @@ request](https://github.com/jbaker00/MonoFrame/issues/new?template=frame-support
 |------------------|-----------------------------------|------------------------------------------|
 | iOS app          | `Sources/MonoFrame/`              | SwiftUI, iOS 17+, XcodeGen project       |
 | Backend          | `backend/functions/index.js`      | Firebase project `monoframe-app` (Blaze) |
-| Firmware         | `firmware/MonoFrameDisplay/`      | Elecrow CrowPanel ESP32-S3 4.2" & 5.79"  |
+| Firmware         | `firmware/MonoFrameDisplay/`      | CrowPanel 4.2"/5.79", reTerminal E1001   |
 | Flashing guide   | `flasher/` (GitHub Pages)         | How to flash with esptool / browser / Espressif GUI |
 | Icon generator   | `scripts/make_icon.py`            | Regenerates the 1024px app icon          |
 
 ## How it works
 
-1. **Flash once**: flash `monoframe-fw-42.bin` or `monoframe-fw-579.bin`
-   (chip ESP32-S3, offset 0x0) using any ESP32 flashing tool — see the
-   [guide](https://jbaker00.github.io/MonoFrame/flasher/). One shared binary,
-   nothing user-specific in it.
+1. **Flash once**: flash the `monoframe-fw-*.bin` for your panel — `42`
+   (CrowPanel 4.2"), `579` (CrowPanel 5.79"), or `e1001` (reTerminal E1001)
+   — chip ESP32-S3, offset 0x0, any ESP32 flashing tool: see the
+   [guide](https://jbaker00.github.io/MonoFrame/flasher/). One shared binary
+   per panel, nothing user-specific in it.
 2. **Guided setup in the app** (My Frames → Add a Frame): the app registers a
    frame on the backend (`POST /registerFrame` → `{frameId, token}`), joins
    the frame's `MonoFrame-XXXX` setup hotspot — WPA2-protected by a code
@@ -45,7 +46,8 @@ request](https://github.com/jbaker00/MonoFrame/issues/new?template=frame-support
    "Send to All Frames" action.
 4. Send to Frame → dither → `POST /uploadFrame?id=…` (Bearer token) →
    `gs://monoframe-app-frames/frames/{frameId}/current.bin`.
-5. Device wakes every 30 min — or on a BOOT-button press — and fetches over
+5. Device wakes every 30 min — or on a button press (BOOT on CrowPanels,
+   Refresh on the reTerminal) — and fetches over
    TLS validated against the pinned Google Trust Services roots
    (`gts_roots.h`), renders, and deep-sleeps. 5+ consecutive failures put it
    back in setup mode.
@@ -76,11 +78,11 @@ iPhone.
 scripts/build_firmware.sh
 ```
 
-Compiles both panel variants with arduino-cli and produces:
-- `flasher/monoframe-fw-{42,579}.bin` — complete images (bootloader +
+Compiles every panel variant with arduino-cli and produces:
+- `flasher/monoframe-fw-{42,579,e1001}.bin` — complete images (bootloader +
   partitions + app) for USB flashing at offset 0x0; these are what gets
   attached to GitHub Releases.
-- `Sources/MonoFrame/Resources/Firmware/monoframe-ota-{42,579}.bin` —
+- `Sources/MonoFrame/Resources/Firmware/monoframe-ota-{42,579,e1001}.bin` —
   app-only images the iOS app bundles for phone-to-frame OTA updates.
 
 Note: a USB flash of the full image wipes the frame's NVS (WiFi credentials

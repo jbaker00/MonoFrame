@@ -73,6 +73,7 @@
   <ul>
     <li><strong>Elecrow CrowPanel ESP32-S3 4.2&Prime;</strong> e-paper display (400 × 300)</li>
     <li><strong>Elecrow CrowPanel ESP32-S3 5.79&Prime;</strong> e-paper display (792 × 272)</li>
+    <li><strong>Seeed reTerminal E1001 7.5&Prime;</strong> monochrome ePaper terminal (800 × 480)</li>
   </ul>
   <p class="note">
     Have a different e-ink frame you'd like supported?
@@ -83,8 +84,9 @@
   <h2>Step 1 — Download the firmware</h2>
   <p>Grab the binary for your panel size from GitHub Releases:</p>
   <p>
-    <a class="download" href="https://github.com/jbaker00/MonoFrame/releases/latest/download/monoframe-fw-42.bin">⬇ 4.2&Prime; firmware</a>
-    <a class="download" href="https://github.com/jbaker00/MonoFrame/releases/latest/download/monoframe-fw-579.bin">⬇ 5.79&Prime; firmware</a>
+    <a class="download" href="https://github.com/jbaker00/MonoFrame/releases/latest/download/monoframe-fw-42.bin">⬇ CrowPanel 4.2&Prime;</a>
+    <a class="download" href="https://github.com/jbaker00/MonoFrame/releases/latest/download/monoframe-fw-579.bin">⬇ CrowPanel 5.79&Prime;</a>
+    <a class="download" href="https://github.com/jbaker00/MonoFrame/releases/latest/download/monoframe-fw-e1001.bin">⬇ reTerminal E1001</a>
   </p>
   <p class="note">
     All releases and checksums:
@@ -125,11 +127,11 @@
     <ol>
       <li>Install <a href="https://docs.espressif.com/projects/esptool/">esptool</a>:
           <code>pip install esptool</code> (or <code>brew install esptool</code> on macOS).</li>
-      <li>Find your serial port: on macOS/Linux run <code>ls /dev/cu.usbserial* /dev/ttyUSB*</code>;
+      <li>Find your serial port: on macOS/Linux run <code>ls /dev/cu.usb* /dev/ttyUSB* /dev/ttyACM*</code>;
           on Windows check Device Manager for the COM port.</li>
       <li>Flash:
 <pre><code>esptool --chip esp32s3 -p YOUR_PORT -b 115200 write-flash 0x0 monoframe-fw-42.bin</code></pre>
-          (use <code>monoframe-fw-579.bin</code> for the 5.79&Prime; panel)</li>
+          (swap in the <code>.bin</code> for your frame)</li>
     </ol>
   </details>
 
@@ -146,8 +148,9 @@
 
   <h2>Step 3 — Set it up</h2>
   <ol>
-    <li>Unplug the frame from the computer and power it on. Within a minute the
-        screen shows <strong>Setup Mode</strong> with a hotspot name and a WiFi code.</li>
+    <li>Unplug the frame from the computer and power it on (the reTerminal
+        E1001 has a power switch on the back). Within a minute the screen shows
+        <strong>Setup Mode</strong> with a hotspot name and a WiFi code.</li>
     <li>Open the MonoFrame app on your iPhone and tap
         <em>My Frames → Add a Frame</em> — the app walks you through the rest.</li>
   </ol>

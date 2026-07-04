@@ -208,8 +208,8 @@ struct ContentView: View {
         }
         if failures.isEmpty {
             status = frames.count == 1
-                ? "Sent! \(frames[0].name) will show it within 30 minutes — or press the button on the back to show it now."
-                : "Sent to all \(frames.count) frames. They'll show it within 30 minutes — or press the button on the back of a frame to show it now."
+                ? "Sent! \(frames[0].name) will show it within 30 minutes — or press \(frames[0].model.syncButtonHint) to show it now."
+                : "Sent to all \(frames.count) frames. They'll show it within 30 minutes — or press a frame's sync button to show it now."
         } else {
             status = "Some sends failed — \(failures.joined(separator: "; "))"
         }

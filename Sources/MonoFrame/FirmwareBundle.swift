@@ -22,6 +22,7 @@ enum FirmwareBundle {
         let name = switch model {
         case .crowPanel42: "monoframe-ota-42"
         case .crowPanel579: "monoframe-ota-579"
+        case .reTerminalE1001: "monoframe-ota-e1001"
         }
         guard let url = Bundle.main.url(forResource: name, withExtension: "bin") else {
             return nil
