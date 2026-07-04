@@ -28,8 +28,9 @@
 #include <Update.h>
 
 #include "config.h"   // FRAME_BASE_URL (same for everyone)
+#include "gts_roots.h"
 
-#define FW_VERSION "2.3.0"
+#define FW_VERSION "2.4.0"
 
 // CrowPanel ESP32-S3 4.2" pin mapping.
 #define EPD_PWR    7
@@ -160,6 +161,21 @@ void startMDNS() {
   }
 }
 
+// TLS cert validation needs a plausible clock. The RTC keeps counting across
+// deep sleep, so NTP only actually runs on cold boot.
+bool syncClock() {
+  constexpr time_t kSaneEpoch = 1750000000;   // mid-2025
+  if (time(nullptr) > kSaneEpoch) return true;
+  configTime(0, 0, "pool.ntp.org", "time.google.com");
+  uint32_t start = millis();
+  while (time(nullptr) < kSaneEpoch && millis() - start < 15000) delay(200);
+  if (time(nullptr) < kSaneEpoch) {
+    gErrorMsg = "clock sync failed";
+    return false;
+  }
+  return true;
+}
+
 // Returns true when the network path worked (a 404 "no picture yet" still
 // counts as success — the WiFi + credentials are fine).
 bool fetchImage(bool& haveImage) {
@@ -167,7 +183,7 @@ bool fetchImage(bool& haveImage) {
   String url = String(FRAME_BASE_URL) + "/getFrame?id=" + gCfg.frameId;
 
   WiFiClientSecure client;
-  client.setInsecure();   // Cloud Functions sit behind Google's GFE; skip CA pinning.
+  client.setCACert(GTS_ROOT_CAS);
 
   HTTPClient http;
   http.setTimeout(20000);
@@ -268,7 +284,7 @@ void deepSleepUntilNext() {
 }
 
 void runNormalMode() {
-  if (!connectWiFi()) {
+  if (!connectWiFi() || !syncClock()) {
     setFailCount(failCount() + 1);
     renderError();
     deepSleepUntilNext();
@@ -296,6 +312,27 @@ void runNormalMode() {
 
 WebServer server(80);
 static bool gProvisionedNow = false;
+
+// The setup hotspot is WPA2-protected with a code shown on the e-ink screen:
+// that encrypts provisioning (home WiFi password, frame token) over the air
+// and proves whoever joins can physically see the frame. Persisted in NVS so
+// the code survives OTA reboots mid-wizard.
+String apPassword() {
+  prefs.begin("monoframe", false);
+  String p = prefs.getString("apPass", "");
+  if (p.length() == 0) {
+    static const char alphabet[] = "23456789abcdefghjkmnpqrstuvwxyz";
+    char buf[9];
+    for (int i = 0; i < 8; i++) {
+      buf[i] = alphabet[esp_random() % (sizeof(alphabet) - 1)];
+    }
+    buf[8] = '\0';
+    p = buf;
+    prefs.putString("apPass", p);
+  }
+  prefs.end();
+  return p;
+}
 
 void handleInfo() {
   uint8_t mac[6];
@@ -373,6 +410,7 @@ void handleUpdateDone() {
 
 void runSetupMode() {
   String ap = deviceName();
+  String apPass = apPassword();
   Serial.printf("Setup mode — AP %s\n", ap.c_str());
 
   String lines[] = {
@@ -382,11 +420,12 @@ void runSetupMode() {
     "2. Tap Frames > Add a Frame",
     "",
     "Frame hotspot: " + ap,
+    "WiFi code: " + apPass,
   };
-  renderLines(lines, 6);
+  renderLines(lines, 7);
 
   WiFi.mode(WIFI_AP);
-  WiFi.softAP(ap.c_str());   // open network, IP 192.168.4.1
+  WiFi.softAP(ap.c_str(), apPass.c_str());   // WPA2, IP 192.168.4.1
   delay(100);
 
   String mdnsName = ap;

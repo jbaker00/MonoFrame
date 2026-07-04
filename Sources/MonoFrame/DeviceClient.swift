@@ -95,8 +95,12 @@ enum DeviceClient {
 // persisting the configuration, so the phone drops back to the home network
 // once the frame reboots and the AP disappears.
 enum HotspotJoiner {
-    static func joinFrameHotspot() async throws {
-        let config = NEHotspotConfiguration(ssidPrefix: "MonoFrame-")
+    // Frames on firmware 2.4.0+ protect the setup hotspot with a WiFi code
+    // shown on their screen; older frames broadcast an open network.
+    static func joinFrameHotspot(code: String = "") async throws {
+        let config = code.isEmpty
+            ? NEHotspotConfiguration(ssidPrefix: "MonoFrame-")
+            : NEHotspotConfiguration(ssidPrefix: "MonoFrame-", passphrase: code, isWEP: false)
         config.joinOnce = true
         do {
             try await NEHotspotConfigurationManager.shared.apply(config)

@@ -36,6 +36,7 @@ struct SetupWizardView: View {
     @State private var deviceModel: DeviceModel = .crowPanel42
     @State private var ssid: String = ""
     @State private var password: String = ""
+    @State private var frameCode: String = ""
     @State private var frameName: String = ""
     @State private var errorText: String = ""
     @State private var isWorking = false
@@ -114,7 +115,7 @@ struct SetupWizardView: View {
             .padding(.leading, 32)
 
             Label {
-                Text("**Power it on.** Within a minute the screen should say **Setup Mode** and show a hotspot name like *MonoFrame-A1B2*.")
+                Text("**Power it on.** Within a minute the screen should say **Setup Mode** and show a hotspot name like *MonoFrame-A1B2* plus a WiFi code.")
             } icon: {
                 Image(systemName: "power")
             }
@@ -158,6 +159,16 @@ struct SetupWizardView: View {
                 }
             } else {
                 Text("MonoFrame will ask to join your frame's WiFi hotspot. Nothing leaves your home network in this step.")
+
+                Text("Type the **WiFi code** shown on your frame's screen. (Frames with older software don't show one — leave this empty.)")
+                    .font(.callout)
+                TextField("WiFi code from the frame's screen", text: $frameCode)
+                    .textInputAutocapitalization(.never)
+                    .autocorrectionDisabled()
+                    .padding(12)
+                    .background(.gray.opacity(0.1))
+                    .clipShape(RoundedRectangle(cornerRadius: 10))
+
                 Button {
                     Task { await connectToDevice() }
                 } label: {
@@ -169,7 +180,8 @@ struct SetupWizardView: View {
                     Text("""
                     Open **Settings → WiFi** on this iPhone and join the network \
                     shown on the frame's screen (it starts with *MonoFrame-*), \
-                    then come back and tap **Connect to Frame** again.
+                    using the frame's WiFi code as the password, then come back \
+                    and tap **Connect to Frame** again.
                     """)
                     .font(.callout)
                     .foregroundStyle(.secondary)
@@ -309,7 +321,7 @@ struct SetupWizardView: View {
         }
 
         do {
-            try await HotspotJoiner.joinFrameHotspot()
+            try await HotspotJoiner.joinFrameHotspot(code: trimmedFrameCode)
         } catch {
             errorText = """
             Couldn't join automatically (\(error.localizedDescription)). \
@@ -359,18 +371,31 @@ struct SetupWizardView: View {
         workingMessage = "Frame is restarting with its new software…"
         try? await Task.sleep(for: .seconds(8))
         for _ in 0..<20 {
-            try? await HotspotJoiner.joinFrameHotspot()
+            try? await HotspotJoiner.joinFrameHotspot(code: trimmedFrameCode)
             if let info = try? await DeviceClient.info(),
                !FirmwareBundle.isOutdated(info.fw) {
                 return true
             }
             try? await Task.sleep(for: .seconds(3))
         }
-        errorText = """
-        The frame didn't reappear after the update. Power-cycle it, wait for \
-        Setup Mode, then tap Connect to Frame again.
-        """
+        if trimmedFrameCode.isEmpty {
+            // The update took the frame from an open hotspot to a protected
+            // one — its screen now shows the code the user needs.
+            errorText = """
+            Your frame's screen now shows a WiFi code. Type it above and tap \
+            Connect to Frame to continue.
+            """
+        } else {
+            errorText = """
+            The frame didn't reappear after the update. Power-cycle it, wait for \
+            Setup Mode, then tap Connect to Frame again.
+            """
+        }
         return false
+    }
+
+    private var trimmedFrameCode: String {
+        frameCode.trimmingCharacters(in: .whitespacesAndNewlines).lowercased()
     }
 
     private func provision() async {
