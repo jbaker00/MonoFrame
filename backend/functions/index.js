@@ -18,9 +18,9 @@ admin.initializeApp();
 
 const BUCKET = "monoframe-app-frames";
 // One entry per supported panel: crowpanel-4.2 (400x300), crowpanel-5.79
-// (792x272). The backend stores whatever the app dithered; the byte count is
-// the only cross-check available.
-const ALLOWED_BYTES = new Set([(400 * 300) / 8, (792 * 272) / 8]);
+// (792x272), reterminal-e1001 (800x480). The backend stores whatever the app
+// dithered; the byte count is the only cross-check available.
+const ALLOWED_BYTES = new Set([(400 * 300) / 8, (792 * 272) / 8, (800 * 480) / 8]);
 const EXPECTED_BYTES = (400 * 300) / 8; // legacy default for HEAD fallback
 const FRAME_ID_ALPHABET = "abcdefghjkmnpqrstuvwxyz23456789";
 const FRAME_ID_LENGTH = 10;
