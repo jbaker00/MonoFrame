@@ -17,7 +17,11 @@ const crypto = require("crypto");
 admin.initializeApp();
 
 const BUCKET = "monoframe-app-frames";
-const EXPECTED_BYTES = (400 * 300) / 8; // 15000
+// One entry per supported panel: crowpanel-4.2 (400x300), crowpanel-5.79
+// (792x272). The backend stores whatever the app dithered; the byte count is
+// the only cross-check available.
+const ALLOWED_BYTES = new Set([(400 * 300) / 8, (792 * 272) / 8]);
+const EXPECTED_BYTES = (400 * 300) / 8; // legacy default for HEAD fallback
 const FRAME_ID_ALPHABET = "abcdefghjkmnpqrstuvwxyz23456789";
 const FRAME_ID_LENGTH = 10;
 
@@ -105,7 +109,7 @@ exports.registerFrame = onRequest(runtimeOpts, async (req, res) => {
   res.status(500).json({error: "could not allocate frame id"});
 });
 
-// POST ?id=<frameId>, Bearer token, body = 15000-byte 1-bit bitmap
+// POST ?id=<frameId>, Bearer token, body = 1-bit bitmap (size per panel)
 exports.uploadFrame = onRequest(runtimeOpts, async (req, res) => {
   if (req.method !== "POST") {
     res.status(405).send("Method Not Allowed");
@@ -115,9 +119,9 @@ exports.uploadFrame = onRequest(runtimeOpts, async (req, res) => {
   if (!frameId) return;
 
   const body = req.rawBody;
-  if (!body || body.length !== EXPECTED_BYTES) {
+  if (!body || !ALLOWED_BYTES.has(body.length)) {
     res.status(400).json({
-      error: `Body must be exactly ${EXPECTED_BYTES} bytes`,
+      error: `Body must be one of ${[...ALLOWED_BYTES].join(", ")} bytes`,
       received: body ? body.length : 0,
     });
     return;
@@ -168,7 +172,7 @@ exports.getFrame = onRequest(runtimeOpts, async (req, res) => {
       return;
     }
     const [data] = await file.download();
-    if (data.length !== EXPECTED_BYTES) {
+    if (!ALLOWED_BYTES.has(data.length)) {
       logger.warn(`unexpected bitmap size for ${frameId}: ${data.length}`);
     }
     res.set("Content-Length", String(data.length));

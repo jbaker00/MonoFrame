@@ -30,6 +30,9 @@ struct ContentView: View {
                     .onChange(of: pickedItem) { _, item in
                         Task { await loadPick(item) }
                     }
+                    .onChange(of: store.selectedFrameId) { _, _ in
+                        rerenderPreview()
+                    }
 
                     if store.frames.count > 1 {
                         Picker("Frame", selection: $store.selectedFrameId) {
@@ -121,6 +124,11 @@ struct ContentView: View {
         return "Send to Frame"
     }
 
+    // The preview (and payload) is rendered for the selected frame's panel.
+    private var targetModel: DeviceModel {
+        store.selectedFrame?.model ?? .crowPanel42
+    }
+
     @ViewBuilder
     private var previewBox: some View {
         ZStack {
@@ -137,13 +145,14 @@ struct ContentView: View {
                     Image(systemName: "photo")
                         .font(.system(size: 36))
                         .foregroundStyle(.secondary)
-                    Text("400 × 300  ·  black & white")
+                    Text(targetModel.resolutionText)
                         .font(.footnote)
                         .foregroundStyle(.secondary)
                 }
             }
         }
-        .aspectRatio(400.0/300.0, contentMode: .fit)
+        .aspectRatio(CGFloat(targetModel.width) / CGFloat(targetModel.height),
+                     contentMode: .fit)
         .frame(maxWidth: 480)
     }
 
@@ -157,7 +166,7 @@ struct ContentView: View {
                 return
             }
             pickedImage = img
-            previewCGImage = EinkConverter.previewCGImage(from: img)
+            previewCGImage = EinkConverter.previewCGImage(from: img, for: targetModel)
             status = previewCGImage == nil
                 ? "Could not render preview."
                 : "Ready to send."
@@ -166,21 +175,37 @@ struct ContentView: View {
         }
     }
 
+    private func rerenderPreview() {
+        guard let img = pickedImage else { return }
+        previewCGImage = EinkConverter.previewCGImage(from: img, for: targetModel)
+    }
+
     private func send(to frames: [Frame]) async {
         guard !frames.isEmpty else {
             status = "No frame selected."
             return
         }
-        guard let img = pickedImage,
-              let blob = EinkConverter.convert(img) else {
+        guard let img = pickedImage else {
             status = "Could not convert image."
             return
         }
         isBusy = true
         defer { isBusy = false }
 
+        // Frames can have different panels; dither once per resolution.
+        var blobs: [DeviceModel: Data] = [:]
         var failures: [String] = []
         for frame in frames {
+            let blob: Data
+            if let cached = blobs[frame.model] {
+                blob = cached
+            } else if let converted = EinkConverter.convert(img, for: frame.model) {
+                blobs[frame.model] = converted
+                blob = converted
+            } else {
+                failures.append("\(frame.name): could not convert image")
+                continue
+            }
             do {
                 try await FrameService.upload(blob, to: frame)
             } catch {

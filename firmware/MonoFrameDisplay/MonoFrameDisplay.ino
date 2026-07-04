@@ -1,6 +1,7 @@
-// MonoFrameDisplay — CrowPanel ESP32-S3 4.2" e-paper (400x300 BW) picture
-// frame. Wakes every 30 minutes, fetches the latest 15,000-byte 1-bit bitmap
-// for YOUR frame from the MonoFrame backend, draws it, and deep-sleeps.
+// MonoFrameDisplay — CrowPanel ESP32-S3 e-paper picture frame. Supports the
+// 4.2" (400x300, default) and 5.79" (792x272, #define PANEL_579) BW panels.
+// Wakes every 30 minutes, fetches the latest 1-bit bitmap for YOUR frame
+// from the MonoFrame backend, draws it, and deep-sleeps.
 //
 // No file editing needed: an unprovisioned frame boots into SETUP MODE — it
 // broadcasts a "MonoFrame-XXXX" WiFi hotspot and the MonoFrame iOS app sends
@@ -11,7 +12,7 @@
 // Required Arduino libraries:
 //   - GxEPD2          (Jean-Marc Zingg)
 //   - Adafruit GFX
-// Board: ESP32S3 Dev Module (Elecrow CrowPanel ESP32-S3 4.2").
+// Board: ESP32S3 Dev Module (Elecrow CrowPanel ESP32-S3 4.2" / 5.79").
 
 #include <Arduino.h>
 #include <WiFi.h>
@@ -37,12 +38,24 @@
 #define EPD_RST   47
 #define EPD_BUSY  48
 
+// Both CrowPanel boards share the pin mapping; the panel driver and geometry
+// differ. Define PANEL_579 in config.h to build for the 5.79" (792x272) panel.
+#if defined(PANEL_579)
+GxEPD2_BW<GxEPD2_579_GDEY0579T93, GxEPD2_579_GDEY0579T93::HEIGHT> display(
+    GxEPD2_579_GDEY0579T93(EPD_CS, EPD_DC, EPD_RST, EPD_BUSY));
+
+constexpr int  PANEL_W = 792;
+constexpr int  PANEL_H = 272;
+#define PANEL_MODEL "crowpanel-5.79"
+#else
 GxEPD2_BW<GxEPD2_420_GDEY042T81, GxEPD2_420_GDEY042T81::HEIGHT> display(
     GxEPD2_420_GDEY042T81(EPD_CS, EPD_DC, EPD_RST, EPD_BUSY));
 
 constexpr int  PANEL_W = 400;
 constexpr int  PANEL_H = 300;
-constexpr int  IMG_BYTES = PANEL_W * PANEL_H / 8;   // 15000
+#define PANEL_MODEL "crowpanel-4.2"
+#endif
+constexpr int  IMG_BYTES = PANEL_W * PANEL_H / 8;
 constexpr uint64_t SLEEP_MICROS = 30ULL * 60ULL * 1000000ULL;   // 30 min
 constexpr int EPD_ROTATION = 0;
 
@@ -278,7 +291,7 @@ WebServer server(80);
 static bool gProvisionedNow = false;
 
 void handleInfo() {
-  String json = String("{\"model\":\"crowpanel-4.2\",\"mac\":\"") +
+  String json = String("{\"model\":\"" PANEL_MODEL "\",\"mac\":\"") +
                 WiFi.macAddress() + "\",\"fw\":\"" FW_VERSION "\"," +
                 "\"name\":\"" + deviceName() + "\"," +
                 "\"provisioned\":" + (gCfg.provisioned() ? "true" : "false") + "}";

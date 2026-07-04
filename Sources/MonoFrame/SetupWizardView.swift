@@ -33,6 +33,7 @@ struct SetupWizardView: View {
     @State private var step: Step = .intro
     @State private var creds: FrameService.RegisterResponse?
     @State private var deviceName: String = ""
+    @State private var deviceModel: DeviceModel = .crowPanel42
     @State private var ssid: String = ""
     @State private var password: String = ""
     @State private var frameName: String = ""
@@ -317,6 +318,7 @@ struct SetupWizardView: View {
         for _ in 0..<10 {
             if let info = try? await DeviceClient.info() {
                 deviceName = info.name
+                deviceModel = DeviceModel(infoModel: info.model)
                 errorText = ""
                 step = .wifi
                 return
@@ -393,7 +395,7 @@ struct SetupWizardView: View {
         guard let creds else { return }
         let frame = Frame(frameId: creds.frameId, token: creds.token,
                           name: frameName.trimmingCharacters(in: .whitespaces),
-                          createdAt: Date())
+                          createdAt: Date(), model: deviceModel)
         store.add(frame)
         dismiss()
     }

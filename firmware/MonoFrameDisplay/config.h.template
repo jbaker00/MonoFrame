@@ -5,3 +5,7 @@
 #pragma once
 
 #define FRAME_BASE_URL "https://us-central1-monoframe-app.cloudfunctions.net"
+
+// Uncomment to build for the CrowPanel 5.79" (792x272) panel instead of the
+// default 4.2" (400x300).
+// #define PANEL_579

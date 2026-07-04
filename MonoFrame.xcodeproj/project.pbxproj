@@ -12,6 +12,7 @@
 		107A133F7B8B30B2229E6090 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 1B62D73737DFE666F2354B2D /* Assets.xcassets */; };
 		128B6209B763AAE050C28D8A /* ScreenshotTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49CB5F8A2A16109D9AD13366 /* ScreenshotTests.swift */; };
 		1EF280DE5C22CD751A5622FF /* GoogleMobileAds in Frameworks */ = {isa = PBXBuildFile; productRef = CD6A64F1C7C35C975DCF5CC4 /* GoogleMobileAds */; };
+		1FC6DE5EBA1C8D686D9058AC /* DeviceModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 317BCC55BDB69F1C7E822C82 /* DeviceModel.swift */; };
 		2E6CAA41FC9C14134225190C /* DeviceClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6FBD7AFF405F6C997916267 /* DeviceClient.swift */; };
 		41C9A21DA59A092CEF6266EB /* EinkConverter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21ED6565E828E961E292F678 /* EinkConverter.swift */; };
 		5E29F97FB8B58F8C8B2051CC /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C046C273624DD2F4DC2DD621 /* ContentView.swift */; };
@@ -35,6 +36,7 @@
 		09A48C36559B60EF42539337 /* FramesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FramesView.swift; sourceTree = "<group>"; };
 		1B62D73737DFE666F2354B2D /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		21ED6565E828E961E292F678 /* EinkConverter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EinkConverter.swift; sourceTree = "<group>"; };
+		317BCC55BDB69F1C7E822C82 /* DeviceModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeviceModel.swift; sourceTree = "<group>"; };
 		376CFC2A0A421A07C2BEC795 /* FrameService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FrameService.swift; sourceTree = "<group>"; };
 		49CB5F8A2A16109D9AD13366 /* ScreenshotTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScreenshotTests.swift; sourceTree = "<group>"; };
 		4E30FBBDC9C13F7A553AFBF9 /* MonoFrameApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MonoFrameApp.swift; sourceTree = "<group>"; };
@@ -82,6 +84,7 @@
 				616A15FDFE60DE750A7E6616 /* AdManager.swift */,
 				C046C273624DD2F4DC2DD621 /* ContentView.swift */,
 				D6FBD7AFF405F6C997916267 /* DeviceClient.swift */,
+				317BCC55BDB69F1C7E822C82 /* DeviceModel.swift */,
 				21ED6565E828E961E292F678 /* EinkConverter.swift */,
 				376CFC2A0A421A07C2BEC795 /* FrameService.swift */,
 				A8FDDA2E56C6E0393A15B9E1 /* FrameStore.swift */,
@@ -223,6 +226,7 @@
 				07EBD3862BDFA106AFB4F635 /* AdManager.swift in Sources */,
 				5E29F97FB8B58F8C8B2051CC /* ContentView.swift in Sources */,
 				2E6CAA41FC9C14134225190C /* DeviceClient.swift in Sources */,
+				1FC6DE5EBA1C8D686D9058AC /* DeviceModel.swift in Sources */,
 				41C9A21DA59A092CEF6266EB /* EinkConverter.swift in Sources */,
 				9D800C5472B053C166FD4F73 /* FrameService.swift in Sources */,
 				059250EEF9F154084B0F1747 /* FrameStore.swift in Sources */,

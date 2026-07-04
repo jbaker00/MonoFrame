@@ -89,6 +89,10 @@ struct FramesView: View {
 
     private func frameRow(_ frame: Frame) -> some View {
         DisclosureGroup {
+            LabeledContent("Panel") {
+                Text("\(frame.model.displayName) · \(frame.model.width) × \(frame.model.height)")
+            }
+            .font(.subheadline)
             detailRow(label: "Frame ID", value: frame.frameId)
             detailRow(label: "Device Token", value: frame.token)
             detailRow(label: "Frame URL", value: FrameService.deviceURL(for: frame))

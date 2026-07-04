@@ -6,8 +6,29 @@ struct Frame: Codable, Identifiable, Equatable, Hashable {
     let token: String
     var name: String
     let createdAt: Date
+    var model: DeviceModel
 
     var id: String { frameId }
+
+    init(frameId: String, token: String, name: String, createdAt: Date,
+         model: DeviceModel = .crowPanel42) {
+        self.frameId = frameId
+        self.token = token
+        self.name = name
+        self.createdAt = createdAt
+        self.model = model
+    }
+
+    // Frames paired before multi-device support have no `model` key, and an
+    // unknown model string must not make the whole Keychain array undecodable.
+    init(from decoder: Decoder) throws {
+        let c = try decoder.container(keyedBy: CodingKeys.self)
+        frameId = try c.decode(String.self, forKey: .frameId)
+        token = try c.decode(String.self, forKey: .token)
+        name = try c.decode(String.self, forKey: .name)
+        createdAt = try c.decode(Date.self, forKey: .createdAt)
+        model = DeviceModel(infoModel: try? c.decode(String.self, forKey: .model))
+    }
 }
 
 // All paired frames, persisted as a JSON array in a single Keychain item.

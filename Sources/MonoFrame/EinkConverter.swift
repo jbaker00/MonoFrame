@@ -2,34 +2,31 @@ import CoreGraphics
 import Foundation
 import UIKit
 
-// 400x300 1-bit packed buffer the CrowPanel ESP32-S3 4.2" expects.
+// Converts a photo into the 1-bit packed buffer a given panel expects.
 // Aspect-fill crop into the panel, then Floyd–Steinberg dither so photos
 // keep tonal detail on a 2-level display.
 enum EinkConverter {
-    static let width = 400
-    static let height = 300
-    static let byteCount = width * height / 8   // 15,000
 
-    static func convert(_ image: UIImage) -> Data? {
+    static func convert(_ image: UIImage, for model: DeviceModel) -> Data? {
         guard let cg = image.cgImage,
-              let gray = renderToGrayscale(cg) else { return nil }
-        let dithered = floydSteinberg(gray)
-        return pack1Bit(dithered)
+              let gray = renderToGrayscale(cg, model) else { return nil }
+        let dithered = floydSteinberg(gray, model)
+        return pack1Bit(dithered, model)
     }
 
     // What the panel will actually display, returned as an 8-bit gray CGImage
     // so SwiftUI can show a "this is what you're sending" preview.
-    static func previewCGImage(from image: UIImage) -> CGImage? {
+    static func previewCGImage(from image: UIImage, for model: DeviceModel) -> CGImage? {
         guard let cg = image.cgImage,
-              let gray = renderToGrayscale(cg) else { return nil }
-        let dithered = floydSteinberg(gray)
+              let gray = renderToGrayscale(cg, model) else { return nil }
+        let dithered = floydSteinberg(gray, model)
         let cs = CGColorSpaceCreateDeviceGray()
         let cfData = Data(dithered) as CFData
         guard let provider = CGDataProvider(data: cfData) else { return nil }
         return CGImage(
-            width: width, height: height,
+            width: model.width, height: model.height,
             bitsPerComponent: 8, bitsPerPixel: 8,
-            bytesPerRow: width,
+            bytesPerRow: model.width,
             space: cs,
             bitmapInfo: CGBitmapInfo(rawValue: CGImageAlphaInfo.none.rawValue),
             provider: provider, decode: nil,
@@ -37,7 +34,9 @@ enum EinkConverter {
         )
     }
 
-    private static func renderToGrayscale(_ cg: CGImage) -> [UInt8]? {
+    private static func renderToGrayscale(_ cg: CGImage, _ model: DeviceModel) -> [UInt8]? {
+        let width = model.width
+        let height = model.height
         let cs = CGColorSpaceCreateDeviceGray()
         var buf = [UInt8](repeating: 0xFF, count: width * height)
         let ok: Bool = buf.withUnsafeMutableBufferPointer { ptr -> Bool in
@@ -67,7 +66,9 @@ enum EinkConverter {
         return ok ? buf : nil
     }
 
-    private static func floydSteinberg(_ src: [UInt8]) -> [UInt8] {
+    private static func floydSteinberg(_ src: [UInt8], _ model: DeviceModel) -> [UInt8] {
+        let width = model.width
+        let height = model.height
         var buf = src.map { Int16($0) }
         for y in 0..<height {
             for x in 0..<width {
@@ -100,8 +101,10 @@ enum EinkConverter {
 
     // GxEPD2 drawImage convention: 1-bit MSB-first, row-major.
     // Bit=1 -> color (drawn as GxEPD_BLACK), bit=0 -> bg (GxEPD_WHITE).
-    private static func pack1Bit(_ src: [UInt8]) -> Data {
-        var out = Data(count: byteCount)
+    private static func pack1Bit(_ src: [UInt8], _ model: DeviceModel) -> Data {
+        let width = model.width
+        let height = model.height
+        var out = Data(count: model.byteCount)
         out.withUnsafeMutableBytes { raw in
             guard let p = raw.bindMemory(to: UInt8.self).baseAddress else { return }
             for y in 0..<height {
