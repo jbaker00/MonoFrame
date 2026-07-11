@@ -9,6 +9,7 @@ struct ContentView: View {
     @State private var status: String = ""
     @State private var isBusy = false
     @State private var showFrames = false
+    @State private var showScreens = false
 
     @EnvironmentObject private var store: FrameStore
 
@@ -98,6 +99,13 @@ struct ContentView: View {
             .navigationTitle("MonoFrame")
             .navigationBarTitleDisplayMode(.large)
             .toolbar {
+                ToolbarItem(placement: .topBarLeading) {
+                    Button {
+                        showScreens = true
+                    } label: {
+                        Label("Screens", systemImage: "rectangle.grid.2x2")
+                    }
+                }
                 ToolbarItem(placement: .topBarTrailing) {
                     Button {
                         showFrames = true
@@ -108,6 +116,9 @@ struct ContentView: View {
             }
             .sheet(isPresented: $showFrames) {
                 FramesView()
+            }
+            .sheet(isPresented: $showScreens) {
+                ScreensView()
             }
         }
     }

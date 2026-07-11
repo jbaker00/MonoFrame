@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		007E03A31721C35B90ABC06E /* ScreenRenderer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 380D5756963B86DFF6E6E27B /* ScreenRenderer.swift */; };
 		059250EEF9F154084B0F1747 /* FrameStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = A8FDDA2E56C6E0393A15B9E1 /* FrameStore.swift */; };
 		107A133F7B8B30B2229E6090 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 1B62D73737DFE666F2354B2D /* Assets.xcassets */; };
 		128B6209B763AAE050C28D8A /* ScreenshotTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49CB5F8A2A16109D9AD13366 /* ScreenshotTests.swift */; };
@@ -16,9 +17,13 @@
 		41C9A21DA59A092CEF6266EB /* EinkConverter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21ED6565E828E961E292F678 /* EinkConverter.swift */; };
 		470AC6F7E4FCF2A07F83FE54 /* monoframe-ota-e1001.bin in Resources */ = {isa = PBXBuildFile; fileRef = E8E1BBE3BD91DA7BA38F0B76 /* monoframe-ota-e1001.bin */; };
 		5E29F97FB8B58F8C8B2051CC /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C046C273624DD2F4DC2DD621 /* ContentView.swift */; };
+		6279CA27B0F32CA5D6874356 /* ScreenLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC5BDCA2338534008CA51359 /* ScreenLayout.swift */; };
 		670E84CD2204764D61025017 /* SetupWizardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 820BD066EC78ADABE177F8E4 /* SetupWizardView.swift */; };
+		78975109B9A894BCB65A8AB5 /* ScreensView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6941AA77662D6AEDD958E65 /* ScreensView.swift */; };
 		917AA39BBA3F0E14479D6615 /* MonoFrameApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E30FBBDC9C13F7A553AFBF9 /* MonoFrameApp.swift */; };
+		971351E31F03AFEE440EBC4C /* SampleScreens.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD078CC94EB5E2EFAB10AB42 /* SampleScreens.swift */; };
 		9D800C5472B053C166FD4F73 /* FrameService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 376CFC2A0A421A07C2BEC795 /* FrameService.swift */; };
+		B2F6EC877D099363CD77EBB5 /* ScreenRenderTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46769C90F5AF6755BD1076D8 /* ScreenRenderTests.swift */; };
 		BBA44598373F0A77C23AA69A /* monoframe-ota-42.bin in Resources */ = {isa = PBXBuildFile; fileRef = E74497B40EE24BCE1601B090 /* monoframe-ota-42.bin */; };
 		D41D8AA67E7707BB62413F16 /* FramesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 09A48C36559B60EF42539337 /* FramesView.swift */; };
 		DD5E20D01E05845152B15B59 /* version.txt in Resources */ = {isa = PBXBuildFile; fileRef = 218FD25F0440D66A8F476016 /* version.txt */; };
@@ -26,6 +31,13 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
+		1CFBEB4F298745A637F5DF33 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 4AC912DF6D151848E14AC1E8 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 726AF17A1B9DB6D1A190436B;
+			remoteInfo = MonoFrame;
+		};
 		89F47A05FB0FC73E7E852986 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 4AC912DF6D151848E14AC1E8 /* Project object */;
@@ -42,7 +54,9 @@
 		21ED6565E828E961E292F678 /* EinkConverter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EinkConverter.swift; sourceTree = "<group>"; };
 		317BCC55BDB69F1C7E822C82 /* DeviceModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeviceModel.swift; sourceTree = "<group>"; };
 		376CFC2A0A421A07C2BEC795 /* FrameService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FrameService.swift; sourceTree = "<group>"; };
+		380D5756963B86DFF6E6E27B /* ScreenRenderer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScreenRenderer.swift; sourceTree = "<group>"; };
 		409E8D2218E590696BDDDD58 /* FirmwareBundle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirmwareBundle.swift; sourceTree = "<group>"; };
+		46769C90F5AF6755BD1076D8 /* ScreenRenderTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScreenRenderTests.swift; sourceTree = "<group>"; };
 		49CB5F8A2A16109D9AD13366 /* ScreenshotTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScreenshotTests.swift; sourceTree = "<group>"; };
 		4E30FBBDC9C13F7A553AFBF9 /* MonoFrameApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MonoFrameApp.swift; sourceTree = "<group>"; };
 		820BD066EC78ADABE177F8E4 /* SetupWizardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SetupWizardView.swift; sourceTree = "<group>"; };
@@ -50,10 +64,14 @@
 		9BE08FD8CB69165ADEED3D46 /* MonoFrameUITests.xctest */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.cfbundle; path = MonoFrameUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		A7F50BC928F0CC8508CD0CBB /* MonoFrame.app */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.application; path = MonoFrame.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		A8FDDA2E56C6E0393A15B9E1 /* FrameStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FrameStore.swift; sourceTree = "<group>"; };
+		BC5BDCA2338534008CA51359 /* ScreenLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScreenLayout.swift; sourceTree = "<group>"; };
 		C046C273624DD2F4DC2DD621 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
+		C0F5DEFBFEBB7DC223E15031 /* MonoFrameTests.xctest */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.cfbundle; path = MonoFrameTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		D6FBD7AFF405F6C997916267 /* DeviceClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeviceClient.swift; sourceTree = "<group>"; };
 		E74497B40EE24BCE1601B090 /* monoframe-ota-42.bin */ = {isa = PBXFileReference; lastKnownFileType = archive.macbinary; path = "monoframe-ota-42.bin"; sourceTree = "<group>"; };
 		E8E1BBE3BD91DA7BA38F0B76 /* monoframe-ota-e1001.bin */ = {isa = PBXFileReference; lastKnownFileType = archive.macbinary; path = "monoframe-ota-e1001.bin"; sourceTree = "<group>"; };
+		F6941AA77662D6AEDD958E65 /* ScreensView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScreensView.swift; sourceTree = "<group>"; };
+		FD078CC94EB5E2EFAB10AB42 /* SampleScreens.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SampleScreens.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXGroup section */
@@ -87,6 +105,10 @@
 				A8FDDA2E56C6E0393A15B9E1 /* FrameStore.swift */,
 				09A48C36559B60EF42539337 /* FramesView.swift */,
 				4E30FBBDC9C13F7A553AFBF9 /* MonoFrameApp.swift */,
+				FD078CC94EB5E2EFAB10AB42 /* SampleScreens.swift */,
+				BC5BDCA2338534008CA51359 /* ScreenLayout.swift */,
+				380D5756963B86DFF6E6E27B /* ScreenRenderer.swift */,
+				F6941AA77662D6AEDD958E65 /* ScreensView.swift */,
 				820BD066EC78ADABE177F8E4 /* SetupWizardView.swift */,
 				71C6969C519F1D6A06361D2B /* Resources */,
 			);
@@ -109,15 +131,26 @@
 			isa = PBXGroup;
 			children = (
 				A7F50BC928F0CC8508CD0CBB /* MonoFrame.app */,
+				C0F5DEFBFEBB7DC223E15031 /* MonoFrameTests.xctest */,
 				9BE08FD8CB69165ADEED3D46 /* MonoFrameUITests.xctest */,
 			);
 			name = Products;
+			sourceTree = "<group>";
+		};
+		DD0AAFAFDEF024A454481F76 /* MonoFrameTests */ = {
+			isa = PBXGroup;
+			children = (
+				46769C90F5AF6755BD1076D8 /* ScreenRenderTests.swift */,
+			);
+			name = MonoFrameTests;
+			path = Tests/MonoFrameTests;
 			sourceTree = "<group>";
 		};
 		DEBC6748051643D477C3619F = {
 			isa = PBXGroup;
 			children = (
 				72C089DF31104D7971551BE4 /* MonoFrame */,
+				DD0AAFAFDEF024A454481F76 /* MonoFrameTests */,
 				0A6B903D4B4F1E58E43678AC /* MonoFrameUITests */,
 				D97FD166C1085CE90566C5E3 /* Products */,
 			);
@@ -143,6 +176,24 @@
 			productName = MonoFrameUITests;
 			productReference = 9BE08FD8CB69165ADEED3D46 /* MonoFrameUITests.xctest */;
 			productType = "com.apple.product-type.bundle.ui-testing";
+		};
+		693B94DD4229CF6D552B2E7F /* MonoFrameTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = DD3C2F142993A93F4F96C79F /* Build configuration list for PBXNativeTarget "MonoFrameTests" */;
+			buildPhases = (
+				0ED8908D29B75E967D3EFFF9 /* Sources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				52E3ECF1C2C18ED9D20D1B41 /* PBXTargetDependency */,
+			);
+			name = MonoFrameTests;
+			packageProductDependencies = (
+			);
+			productName = MonoFrameTests;
+			productReference = C0F5DEFBFEBB7DC223E15031 /* MonoFrameTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
 		};
 		726AF17A1B9DB6D1A190436B /* MonoFrame */ = {
 			isa = PBXNativeTarget;
@@ -176,6 +227,10 @@
 						ProvisioningStyle = Automatic;
 						TestTargetID = 726AF17A1B9DB6D1A190436B;
 					};
+					693B94DD4229CF6D552B2E7F = {
+						DevelopmentTeam = G3P9A8Z2NP;
+						ProvisioningStyle = Automatic;
+					};
 					726AF17A1B9DB6D1A190436B = {
 						DevelopmentTeam = G3P9A8Z2NP;
 						ProvisioningStyle = Automatic;
@@ -197,6 +252,7 @@
 			projectRoot = "";
 			targets = (
 				726AF17A1B9DB6D1A190436B /* MonoFrame */,
+				693B94DD4229CF6D552B2E7F /* MonoFrameTests */,
 				09DB959ACEDBDCD28CB72EE6 /* MonoFrameUITests */,
 			);
 		};
@@ -226,6 +282,14 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		0ED8908D29B75E967D3EFFF9 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				B2F6EC877D099363CD77EBB5 /* ScreenRenderTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		0FD61F293AF0BAE8F86D6C59 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -239,6 +303,10 @@
 				059250EEF9F154084B0F1747 /* FrameStore.swift in Sources */,
 				D41D8AA67E7707BB62413F16 /* FramesView.swift in Sources */,
 				917AA39BBA3F0E14479D6615 /* MonoFrameApp.swift in Sources */,
+				971351E31F03AFEE440EBC4C /* SampleScreens.swift in Sources */,
+				6279CA27B0F32CA5D6874356 /* ScreenLayout.swift in Sources */,
+				007E03A31721C35B90ABC06E /* ScreenRenderer.swift in Sources */,
+				78975109B9A894BCB65A8AB5 /* ScreensView.swift in Sources */,
 				670E84CD2204764D61025017 /* SetupWizardView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -246,6 +314,11 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
+		52E3ECF1C2C18ED9D20D1B41 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 726AF17A1B9DB6D1A190436B /* MonoFrame */;
+			targetProxy = 1CFBEB4F298745A637F5DF33 /* PBXContainerItemProxy */;
+		};
 		ECD6E295BF220704F1AF297C /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = 726AF17A1B9DB6D1A190436B /* MonoFrame */;
@@ -258,6 +331,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
+				GENERATE_INFOPLIST_FILE = YES;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -274,6 +348,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
+				GENERATE_INFOPLIST_FILE = YES;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -430,6 +505,40 @@
 			};
 			name = Release;
 		};
+		DD265E932CB058C15B50D673 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				GENERATE_INFOPLIST_FILE = YES;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.jamesbaker.MonoFrameTests;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/MonoFrame.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/MonoFrame";
+			};
+			name = Release;
+		};
+		EDF98B590B765922B8E2E4C6 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				GENERATE_INFOPLIST_FILE = YES;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.jamesbaker.MonoFrameTests;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/MonoFrame.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/MonoFrame";
+			};
+			name = Debug;
+		};
 		F1C19539C0BC8105529B5967 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -464,6 +573,15 @@
 			buildConfigurations = (
 				BD16F9C956809DD509FD0F31 /* Debug */,
 				B74F87D02D1D9062F92C5295 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		DD3C2F142993A93F4F96C79F /* Build configuration list for PBXNativeTarget "MonoFrameTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				EDF98B590B765922B8E2E4C6 /* Debug */,
+				DD265E932CB058C15B50D673 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Debug;
