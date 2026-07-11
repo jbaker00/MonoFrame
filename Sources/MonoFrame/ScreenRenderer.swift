@@ -96,7 +96,13 @@ enum ScreenRenderer {
         let number = days.map { $0 >= 0 ? "\($0)" : "+\(-$0)" } ?? "?"
         let caption: String
         if let label = props.label, !label.isEmpty {
-            caption = days.map { $0 == 1 ? "DAY \(label)" : "DAYS \(label)" } ?? label
+            // Labels often already say "days" ("Days to Vacation") — only
+            // prepend the unit when the label doesn't mention it.
+            if label.range(of: "day", options: .caseInsensitive) != nil {
+                caption = label
+            } else {
+                caption = days.map { $0 == 1 ? "DAY \(label)" : "DAYS \(label)" } ?? label
+            }
         } else {
             caption = (days == 1) ? "DAY" : "DAYS"
         }
