@@ -6,6 +6,10 @@ struct ScreensView: View {
     @EnvironmentObject private var store: FrameStore
     @Environment(\.dismiss) private var dismiss
 
+    // User-created screens (LLM-generated or pasted) live alongside samples.
+    @StateObject private var customStore = CustomScreenStore()
+    @State private var showCreate = false
+
     @State private var status: String = ""
     @State private var sendingScreen: String?
 
@@ -30,6 +34,24 @@ struct ScreensView: View {
                         .clipShape(RoundedRectangle(cornerRadius: 10))
                     }
 
+                    Button {
+                        showCreate = true
+                    } label: {
+                        Label("Create New Screen", systemImage: "sparkles")
+                            .frame(maxWidth: .infinity)
+                            .padding()
+                            .background(.tint.opacity(0.15))
+                            .clipShape(RoundedRectangle(cornerRadius: 10))
+                    }
+
+                    if !customStore.screens.isEmpty {
+                        sectionHeader("My Screens")
+                        ForEach(customStore.screens) { layout in
+                            screenCard(layout, deletable: true)
+                        }
+                        sectionHeader("Samples")
+                    }
+
                     ForEach(SampleScreens.all) { layout in
                         screenCard(layout)
                     }
@@ -50,11 +72,22 @@ struct ScreensView: View {
                     Button("Done") { dismiss() }
                 }
             }
+            .sheet(isPresented: $showCreate) {
+                CreateScreenView(customStore: customStore)
+            }
         }
     }
 
     @ViewBuilder
-    private func screenCard(_ layout: ScreenLayout) -> some View {
+    private func sectionHeader(_ title: String) -> some View {
+        Text(title)
+            .font(.title3.bold())
+            .frame(maxWidth: .infinity, alignment: .leading)
+            .padding(.top, 4)
+    }
+
+    @ViewBuilder
+    private func screenCard(_ layout: ScreenLayout, deletable: Bool = false) -> some View {
         VStack(alignment: .leading, spacing: 8) {
             preview(of: layout)
                 .aspectRatio(CGFloat(targetModel.width) / CGFloat(targetModel.height),
@@ -63,8 +96,19 @@ struct ScreensView: View {
                 .overlay(RoundedRectangle(cornerRadius: 8)
                     .stroke(.gray.opacity(0.3), lineWidth: 1))
 
-            Text(layout.name)
-                .font(.headline)
+            HStack {
+                Text(layout.name)
+                    .font(.headline)
+                Spacer()
+                if deletable {
+                    Button(role: .destructive) {
+                        customStore.remove(layout)
+                    } label: {
+                        Image(systemName: "trash")
+                    }
+                    .buttonStyle(.borderless)
+                }
+            }
             if let description = layout.description {
                 Text(description)
                     .font(.subheadline)
