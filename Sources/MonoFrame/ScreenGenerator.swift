@@ -1,112 +1,46 @@
 import Foundation
-import Security
 
-// Generates ScreenLayout JSON from a plain-language description using the
-// user's own LLM API key (bring-your-own-key: calls go straight from the
-// phone to the chosen provider, nothing is proxied). Groq is the default —
-// it has a free tier. No key at all? CreateScreenView also offers a
-// copy-the-prompt / paste-the-reply path for any AI chat app.
-enum LLMProvider: String, CaseIterable, Identifiable, Codable {
-    case groq
-    case openRouter
-    case openAI
-    case ollama
-    case anthropic
-
-    var id: String { rawValue }
-
-    var displayName: String {
-        switch self {
-        case .groq: "Groq (free)"
-        case .openRouter: "OpenRouter"
-        case .openAI: "OpenAI"
-        case .ollama: "Ollama (local)"
-        case .anthropic: "Anthropic"
-        }
-    }
-
-    var defaultModel: String {
-        switch self {
-        case .groq: "llama-3.3-70b-versatile"
-        case .openRouter: "openai/gpt-4o-mini"
-        case .openAI: "gpt-4o-mini"
-        case .ollama: "llama3.1"
-        case .anthropic: "claude-haiku-4-5-20251001"
-        }
-    }
-
-    var endpoint: URL {
-        switch self {
-        case .groq: URL(string: "https://api.groq.com/openai/v1/chat/completions")!
-        case .openRouter: URL(string: "https://openrouter.ai/api/v1/chat/completions")!
-        case .openAI: URL(string: "https://api.openai.com/v1/chat/completions")!
-        case .ollama: URL(string: "http://127.0.0.1:11434/v1/chat/completions")!
-        case .anthropic: URL(string: "https://api.anthropic.com/v1/messages")!
-        }
-    }
-
-    var needsKey: Bool { self != .ollama }
-}
-
+// The copy-paste screen designer: builds a prompt any AI chat can answer,
+// and ingests the reply back into a ScreenLayout. There is deliberately no
+// API-key path — the user's own chat app (ChatGPT, Claude, Gemini, …) does
+// the generation; this code only has to be forgiving about what comes back.
 enum ScreenGenerator {
 
     enum GeneratorError: LocalizedError {
-        case missingKey(LLMProvider)
-        case badResponse(Int, String)
-        case emptyReply
+        case noJSON
         case invalidLayout(String)
 
         var errorDescription: String? {
             switch self {
-            case .missingKey(let p):
-                return "No API key saved for \(p.displayName). Add one in the form below."
-            case .badResponse(let code, let body):
-                return "\(code) from provider: \(body.prefix(200))"
-            case .emptyReply:
-                return "The model returned an empty reply."
+            case .noJSON:
+                return "No JSON found — paste the AI's whole reply, including the {...} block."
             case .invalidLayout(let why):
-                return "The model's JSON didn't decode: \(why)"
+                return "Couldn't read the layout: \(why)"
             }
         }
     }
 
-    /// The full prompt for the copy-paste path: everything an external AI
-    /// chat needs to produce JSON this app can ingest, including panel size.
-    static func clipboardPrompt(request: String, for model: DeviceModel) -> String {
-        systemPrompt(for: model) + "\n\nRequest: " + request
-    }
-
-    /// One generation attempt plus one self-repair retry on invalid JSON.
-    static func generate(request: String, provider: LLMProvider, model: String,
-                         apiKey: String, for deviceModel: DeviceModel) async throws -> ScreenLayout {
-        let system = systemPrompt(for: deviceModel)
-        do {
-            let reply = try await complete(system: system, user: request,
-                                           provider: provider, model: model, apiKey: apiKey)
-            return try parseLayout(from: reply)
-        } catch let error as GeneratorError {
-            guard case .invalidLayout(let why) = error else { throw error }
-            let repair = request + "\n\nYour previous reply was not valid layout JSON (\(why)). " +
-                "Respond with ONLY the corrected JSON object — no prose, no code fences."
-            let reply = try await complete(system: system, user: repair,
-                                           provider: provider, model: model, apiKey: apiKey)
-            return try parseLayout(from: reply)
-        }
-    }
-
     // MARK: - Prompt
+
+    /// Everything an external AI chat needs to produce JSON this app can
+    /// ingest, including the target panel's exact size.
+    static func clipboardPrompt(request: String, for model: DeviceModel) -> String {
+        systemPrompt(for: model)
+            + "\n\nRequest: " + request
+            + "\n\nReply with ONLY the JSON object in a single code block."
+    }
 
     static func systemPrompt(for model: DeviceModel) -> String {
         """
         You design screens for a black & white e-ink display, \(model.width)x\(model.height) \
         pixels, 1-bit (pure black on white, no grays).
 
-        Reply with ONLY one JSON object matching this schema — no markdown fences, no commentary:
+        Output one JSON object matching this schema exactly:
         {"version":1,"name":"Short Name","description":"one sentence","widgets":[
           {"type":"<type>","frame":{"x":0.0,"y":0.0,"w":1.0,"h":1.0},"props":{...}}]}
 
         frame values are FRACTIONS of the screen (0.0-1.0); x,y is the top-left corner.
-        Widget types and their props (all props optional unless noted):
+        The ONLY valid widget types and their props (all props optional unless noted):
         - "text": props.text (required), props.weight "regular"|"bold", props.align \
         "leading"|"center"|"trailing", props.inverted true = white-on-black banner
         - "date": today's date. props.style "long"|"short"
@@ -117,6 +51,8 @@ enum ScreenGenerator {
         - "box": outline rectangle for grouping
 
         Rules:
+        - Strict JSON only: straight double quotes, no trailing commas, no comments.
+        - Do not invent widget types — anything not in the list above is dropped.
         - The screen is sent as a static picture: prefer date-stable content (calendar, \
         countdown, text). Use "clock" only if the user asks for one.
         - Text height comes from frame.h — a hero line wants h 0.2-0.4, a caption 0.08-0.12.
@@ -125,140 +61,77 @@ enum ScreenGenerator {
         """
     }
 
-    // MARK: - Provider calls
-
-    private static func complete(system: String, user: String, provider: LLMProvider,
-                                 model: String, apiKey: String) async throws -> String {
-        if provider.needsKey && apiKey.isEmpty {
-            throw GeneratorError.missingKey(provider)
-        }
-
-        var req = URLRequest(url: provider.endpoint)
-        req.httpMethod = "POST"
-        req.timeoutInterval = 90
-        req.setValue("application/json", forHTTPHeaderField: "Content-Type")
-
-        let body: [String: Any]
-        if provider == .anthropic {
-            req.setValue(apiKey, forHTTPHeaderField: "x-api-key")
-            req.setValue("2023-06-01", forHTTPHeaderField: "anthropic-version")
-            body = [
-                "model": model,
-                "max_tokens": 1500,
-                "system": system,
-                "messages": [["role": "user", "content": user]],
-            ]
-        } else {
-            if provider.needsKey {
-                req.setValue("Bearer \(apiKey)", forHTTPHeaderField: "Authorization")
-            }
-            body = [
-                "model": model,
-                "temperature": 0.7,
-                "messages": [
-                    ["role": "system", "content": system],
-                    ["role": "user", "content": user],
-                ],
-            ]
-        }
-        req.httpBody = try JSONSerialization.data(withJSONObject: body)
-
-        let (data, resp) = try await URLSession.shared.data(for: req)
-        guard let http = resp as? HTTPURLResponse, (200..<300).contains(http.statusCode) else {
-            let code = (resp as? HTTPURLResponse)?.statusCode ?? -1
-            throw GeneratorError.badResponse(code, String(data: data, encoding: .utf8) ?? "")
-        }
-
-        guard let json = try JSONSerialization.jsonObject(with: data) as? [String: Any] else {
-            throw GeneratorError.emptyReply
-        }
-        let content: String?
-        if provider == .anthropic {
-            let blocks = json["content"] as? [[String: Any]]
-            content = blocks?.compactMap { $0["text"] as? String }.joined()
-        } else {
-            let choices = json["choices"] as? [[String: Any]]
-            let message = choices?.first?["message"] as? [String: Any]
-            content = message?["content"] as? String
-        }
-        guard let content, !content.isEmpty else { throw GeneratorError.emptyReply }
-        return content
-    }
-
     // MARK: - Parsing
 
-    /// Pulls the outermost JSON object out of the reply (models love fences
-    /// and preambles despite instructions) and decodes it.
+    /// Pulls the outermost JSON object out of a pasted reply and decodes it.
+    /// Chat apps mangle JSON in predictable ways (code fences, prose around
+    /// the block, smart quotes, trailing commas) — all are repaired here.
     static func parseLayout(from reply: String) throws -> ScreenLayout {
         guard let start = reply.firstIndex(of: "{"),
               let end = reply.lastIndex(of: "}"), start < end else {
-            throw GeneratorError.invalidLayout("no JSON object found in the reply")
+            throw GeneratorError.noJSON
         }
-        let json = String(reply[start...end])
-        do {
-            let layout = try ScreenLayout.decode(fromJSON: json)
-            guard !layout.widgets.isEmpty else {
-                throw GeneratorError.invalidLayout("layout has no widgets")
+        let raw = String(reply[start...end])
+
+        var lastProblem = "unknown"
+        for candidate in [raw, repaired(raw)] {
+            do {
+                return try validate(try ScreenLayout.decode(fromJSON: candidate))
+            } catch let error as GeneratorError {
+                throw error // validation problems don't improve with repair
+            } catch {
+                lastProblem = describe(error)
             }
-            guard !layout.name.trimmingCharacters(in: .whitespaces).isEmpty else {
-                throw GeneratorError.invalidLayout("layout has no name")
-            }
-            return layout
-        } catch let error as GeneratorError {
-            throw error
-        } catch {
-            throw GeneratorError.invalidLayout(error.localizedDescription)
+        }
+        throw GeneratorError.invalidLayout(lastProblem)
+    }
+
+    private static func validate(_ layout: ScreenLayout) throws -> ScreenLayout {
+        guard !layout.widgets.isEmpty else {
+            throw GeneratorError.invalidLayout(
+                "no usable widgets — the reply may have invented widget types")
+        }
+        guard !layout.name.trimmingCharacters(in: .whitespaces).isEmpty else {
+            throw GeneratorError.invalidLayout("the layout has no name")
+        }
+        return layout
+    }
+
+    /// Undoes the damage chat apps and keyboards do to copied JSON.
+    static func repaired(_ json: String) -> String {
+        var s = json
+        // Smart punctuation (iOS keyboards, some chat renderers).
+        for (bad, good) in [("\u{201C}", "\""), ("\u{201D}", "\""), ("\u{201E}", "\""),
+                            ("\u{2018}", "'"), ("\u{2019}", "'")] {
+            s = s.replacingOccurrences(of: bad, with: good)
+        }
+        // Trailing commas before a closing brace/bracket.
+        s = s.replacingOccurrences(of: #",\s*([}\]])"#, with: "$1",
+                                   options: .regularExpression)
+        return s
+    }
+
+    private static func describe(_ error: Error) -> String {
+        guard let decoding = error as? DecodingError else {
+            return error.localizedDescription
+        }
+        switch decoding {
+        case .keyNotFound(let key, let ctx):
+            return "missing \"\(key.stringValue)\" at \(path(ctx))"
+        case .typeMismatch(_, let ctx):
+            return "wrong value type at \(path(ctx))"
+        case .valueNotFound(_, let ctx):
+            return "missing value at \(path(ctx))"
+        case .dataCorrupted(let ctx):
+            return ctx.debugDescription.isEmpty ? "malformed JSON" : ctx.debugDescription
+        @unknown default:
+            return decoding.localizedDescription
         }
     }
-}
 
-// API keys per provider, in the Keychain; model overrides and the selected
-// provider in UserDefaults (not secret).
-enum LLMSettings {
-    private static let service = "com.jamesbaker.MonoFrame.llmKeys"
-
-    static var selectedProvider: LLMProvider {
-        get {
-            UserDefaults.standard.string(forKey: "llmProvider")
-                .flatMap(LLMProvider.init(rawValue:)) ?? .groq
-        }
-        set { UserDefaults.standard.set(newValue.rawValue, forKey: "llmProvider") }
-    }
-
-    static func model(for provider: LLMProvider) -> String {
-        UserDefaults.standard.string(forKey: "llmModel.\(provider.rawValue)")
-            ?? provider.defaultModel
-    }
-
-    static func setModel(_ model: String, for provider: LLMProvider) {
-        UserDefaults.standard.set(model, forKey: "llmModel.\(provider.rawValue)")
-    }
-
-    static func apiKey(for provider: LLMProvider) -> String {
-        let query: [String: Any] = [
-            kSecClass as String: kSecClassGenericPassword,
-            kSecAttrService as String: service,
-            kSecAttrAccount as String: provider.rawValue,
-            kSecReturnData as String: true,
-            kSecMatchLimit as String: kSecMatchLimitOne,
-        ]
-        var item: CFTypeRef?
-        guard SecItemCopyMatching(query as CFDictionary, &item) == errSecSuccess,
-              let data = item as? Data else { return "" }
-        return String(data: data, encoding: .utf8) ?? ""
-    }
-
-    static func setAPIKey(_ key: String, for provider: LLMProvider) {
-        let query: [String: Any] = [
-            kSecClass as String: kSecClassGenericPassword,
-            kSecAttrService as String: service,
-            kSecAttrAccount as String: provider.rawValue,
-        ]
-        SecItemDelete(query as CFDictionary)
-        guard !key.isEmpty else { return }
-        var add = query
-        add[kSecValueData as String] = Data(key.utf8)
-        add[kSecAttrAccessible as String] = kSecAttrAccessibleAfterFirstUnlock
-        SecItemAdd(add as CFDictionary, nil)
+    private static func path(_ ctx: DecodingError.Context) -> String {
+        let p = ctx.codingPath.map { $0.intValue.map { "[\($0)]" } ?? $0.stringValue }
+            .joined(separator: ".")
+        return p.isEmpty ? "top level" : p
     }
 }

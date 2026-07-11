@@ -1,0 +1,16 @@
+{
+  "name": "monoframe-screens-mcp",
+  "version": "1.0.0",
+  "description": "MCP server for designing MonoFrame e-ink dashboard screens with validated output",
+  "type": "module",
+  "bin": { "monoframe-screens-mcp": "server.js" },
+  "main": "server.js",
+  "scripts": {
+    "test": "node test/validate.test.js"
+  },
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.0.0",
+    "zod": "^3.23.0"
+  },
+  "license": "MIT"
+}

@@ -12,6 +12,32 @@ struct ScreenLayout: Codable, Identifiable, Hashable {
     var description: String?
     var widgets: [ScreenWidget]
 
+    init(version: Int, name: String, description: String? = nil,
+         widgets: [ScreenWidget]) {
+        self.version = version
+        self.name = name
+        self.description = description
+        self.widgets = widgets
+    }
+
+    // Widgets decode lossily: an entry with an unknown type (LLMs invent
+    // them) or a broken frame drops out instead of sinking the whole screen.
+    init(from decoder: Decoder) throws {
+        let c = try decoder.container(keyedBy: CodingKeys.self)
+        version = try c.decodeIfPresent(Int.self, forKey: .version) ?? 1
+        name = try c.decode(String.self, forKey: .name)
+        description = try c.decodeIfPresent(String.self, forKey: .description)
+        widgets = try c.decode([FailableWidget].self, forKey: .widgets)
+            .compactMap(\.widget)
+    }
+
+    private struct FailableWidget: Decodable {
+        let widget: ScreenWidget?
+        init(from decoder: Decoder) {
+            widget = try? ScreenWidget(from: decoder)
+        }
+    }
+
     var id: String { name }
 
     // Screens are static pictures until frames can re-render server-side, so

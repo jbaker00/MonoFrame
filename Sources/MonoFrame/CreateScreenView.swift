@@ -1,106 +1,59 @@
 import SwiftUI
 
-// "Create new screen": describe a screen in plain words and either (a) let
-// the app call an LLM with your own API key (Groq free tier by default), or
-// (b) copy a ready-made prompt into any AI chat app and paste its reply
-// back. Both paths validate against the ScreenLayout schema and preview
-// before saving to CustomScreenStore.
+// "Create new screen", no API key required: describe the screen, copy a
+// ready-made prompt into any AI chat (ChatGPT, Claude, Gemini, …), paste the
+// reply back, preview, save. The prompt embeds the target panel's size and
+// the widget schema; parseLayout repairs common chat-app JSON damage.
 struct CreateScreenView: View {
     @ObservedObject var customStore: CustomScreenStore
     @EnvironmentObject private var frameStore: FrameStore
     @Environment(\.dismiss) private var dismiss
 
     @State private var request = ""
-    @State private var provider = LLMSettings.selectedProvider
-    @State private var model = LLMSettings.model(for: LLMSettings.selectedProvider)
-    @State private var apiKey = LLMSettings.apiKey(for: LLMSettings.selectedProvider)
-    @State private var generated: ScreenLayout?
-    @State private var isBusy = false
-    @State private var errorText = ""
     @State private var pastedReply = ""
     @State private var promptCopied = false
+    @State private var generated: ScreenLayout?
+    @State private var errorText = ""
 
     private var targetModel: DeviceModel {
-        frameStore.selectedFrame?.model ?? .reTerminalE1001
+        frameStore.selectedFrame?.model ?? .crowPanel42
     }
 
     var body: some View {
         NavigationStack {
             Form {
-                Section("What should the screen show?") {
+                Section("1. What should the screen show?") {
                     TextField("e.g. A big countdown to Dec 25 labeled UNTIL CHRISTMAS, with today's date small at the bottom",
                               text: $request, axis: .vertical)
                         .lineLimit(3...6)
+                        .onChange(of: request) { _, _ in promptCopied = false }
                 }
 
-                Section("Model") {
-                    Picker("Provider", selection: $provider) {
-                        ForEach(LLMProvider.allCases) { p in
-                            Text(p.displayName).tag(p)
-                        }
-                    }
-                    .onChange(of: provider) { _, p in
-                        LLMSettings.selectedProvider = p
-                        model = LLMSettings.model(for: p)
-                        apiKey = LLMSettings.apiKey(for: p)
-                    }
-                    TextField("Model", text: $model)
-                        .autocorrectionDisabled()
-                        .textInputAutocapitalization(.never)
-                        .onChange(of: model) { _, m in
-                            LLMSettings.setModel(m, for: provider)
-                        }
-                    if provider.needsKey {
-                        SecureField("API key", text: $apiKey)
-                            .onChange(of: apiKey) { _, k in
-                                LLMSettings.setAPIKey(k, for: provider)
-                            }
-                    }
-                    Text("Your key stays on this device and calls go straight to the provider. Groq keys are free at console.groq.com.")
-                        .font(.footnote)
-                        .foregroundStyle(.secondary)
-                }
-
-                Section {
-                    Button {
-                        Task { await generate() }
-                    } label: {
-                        HStack {
-                            Spacer()
-                            if isBusy {
-                                ProgressView()
-                            } else {
-                                Label(generated == nil ? "Generate" : "Regenerate",
-                                      systemImage: "sparkles")
-                            }
-                            Spacer()
-                        }
-                    }
-                    .disabled(request.trimmingCharacters(in: .whitespaces).isEmpty || isBusy)
-                }
-
-                Section("No API key? Use any AI chat") {
-                    Text("Copy the prompt, run it in ChatGPT, Claude, Gemini — anything — then paste the reply here.")
-                        .font(.footnote)
-                        .foregroundStyle(.secondary)
+                Section("2. Ask any AI chat") {
                     Button {
                         UIPasteboard.general.string = ScreenGenerator.clipboardPrompt(
                             request: request, for: targetModel)
                         promptCopied = true
                     } label: {
-                        Label(promptCopied ? "Prompt Copied" : "Copy Prompt",
+                        Label(promptCopied ? "Prompt Copied — paste it in your AI app" : "Copy Prompt",
                               systemImage: promptCopied ? "checkmark" : "doc.on.doc")
                     }
                     .disabled(request.trimmingCharacters(in: .whitespaces).isEmpty)
-                    TextField("Paste the AI's reply here", text: $pastedReply, axis: .vertical)
-                        .lineLimit(2...5)
+                    Text("Works with ChatGPT, Claude, Gemini — anything. The prompt already knows your frame is \(targetModel.resolutionText).")
+                        .font(.footnote)
+                        .foregroundStyle(.secondary)
+                }
+
+                Section("3. Paste the AI's reply") {
+                    TextField("Paste the whole reply here", text: $pastedReply, axis: .vertical)
+                        .lineLimit(2...6)
                         .font(.footnote.monospaced())
                         .autocorrectionDisabled()
                         .textInputAutocapitalization(.never)
                     Button {
                         useReply()
                     } label: {
-                        Label("Use Reply", systemImage: "arrow.down.doc")
+                        Label("Build Screen", systemImage: "wand.and.stars")
                     }
                     .disabled(pastedReply.trimmingCharacters(in: .whitespaces).isEmpty)
                 }
@@ -161,23 +114,7 @@ struct CreateScreenView: View {
         do {
             generated = try ScreenGenerator.parseLayout(from: pastedReply)
         } catch {
-            errorText = error.localizedDescription
-        }
-    }
-
-    private func generate() async {
-        isBusy = true
-        errorText = ""
-        defer { isBusy = false }
-        do {
-            generated = try await ScreenGenerator.generate(
-                request: request,
-                provider: provider,
-                model: model,
-                apiKey: apiKey,
-                for: targetModel
-            )
-        } catch {
+            generated = nil
             errorText = error.localizedDescription
         }
     }

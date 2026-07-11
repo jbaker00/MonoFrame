@@ -22,6 +22,32 @@ request](https://github.com/jbaker00/MonoFrame/issues/new?template=frame-support
 | Flashing guide   | `flasher/` (GitHub Pages)         | How to flash with esptool / browser / Espressif GUI |
 | Icon generator   | `scripts/make_icon.py`            | Regenerates the 1024px app icon          |
 
+## Design screens with any AI
+
+Besides photos, the app can show **screens** — clock, calendar, countdowns,
+notes — picked from built-in samples or designed by an AI, no API key needed:
+
+1. In the app: **Screens → Create New Screen**, describe what you want, tap
+   **Copy Prompt**. The prompt embeds your frame's exact panel size and the
+   widget schema.
+2. Paste it into any AI chat (ChatGPT, Claude, Gemini, a local model…) and
+   copy its reply.
+3. Paste the reply back into the app — it repairs common chat-app JSON
+   damage, previews the screen, and sends it to your frame.
+
+Power users with an MCP-capable assistant (Claude Desktop / Claude Code) can
+register the bundled MCP server so the AI validates its own output before
+handing it over:
+
+```bash
+cd mcp && npm install
+claude mcp add monoframe-screens -- node "$(pwd)/server.js"
+```
+
+It exposes `screen_design_guide`, `validate_screen_layout`, and
+`list_panels` — the assistant loops on validation until the layout is clean,
+then gives you guaranteed-paste-ready JSON.
+
 ## How it works
 
 1. **Flash once**: flash the `monoframe-fw-*.bin` for your panel — `42`
