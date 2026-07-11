@@ -6,7 +6,7 @@ final class ScreenRenderTests: XCTestCase {
     // Every bundled sample must decode — a typo in SampleScreens JSON would
     // otherwise silently drop the screen from the picker (compactMap).
     func testAllSamplesDecode() {
-        XCTAssertEqual(SampleScreens.all.count, 5)
+        XCTAssertEqual(SampleScreens.all.count, 7)
     }
 
     func testRendersAtExactPanelSize() {

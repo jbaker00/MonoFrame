@@ -88,6 +88,34 @@ enum SampleScreens {
              "props": {"text": "one thing at a time", "weight": "regular"}}
           ]
         }
+        """,
+
+        // Clock over this month's calendar.
+        """
+        {
+          "version": 1,
+          "name": "Clock & Calendar",
+          "description": "The time in large type over this month's calendar.",
+          "widgets": [
+            {"type": "clock", "frame": {"x": 0.06, "y": 0.02, "w": 0.88, "h": 0.28}},
+            {"type": "divider", "frame": {"x": 0.10, "y": 0.31, "w": 0.80, "h": 0.03}},
+            {"type": "calendarMonth", "frame": {"x": 0.14, "y": 0.36, "w": 0.72, "h": 0.62}}
+          ]
+        }
+        """,
+
+        // Full-screen clock with the date beneath.
+        """
+        {
+          "version": 1,
+          "name": "Big Clock",
+          "description": "A wall-clock face in type you can read from anywhere in the room.",
+          "widgets": [
+            {"type": "clock", "frame": {"x": 0.03, "y": 0.12, "w": 0.94, "h": 0.52}},
+            {"type": "date", "frame": {"x": 0.06, "y": 0.68, "w": 0.88, "h": 0.18},
+             "props": {"weight": "regular"}}
+          ]
+        }
         """
     ]
 }

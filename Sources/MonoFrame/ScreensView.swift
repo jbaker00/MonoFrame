@@ -70,6 +70,12 @@ struct ScreensView: View {
                     .font(.subheadline)
                     .foregroundStyle(.secondary)
             }
+            if layout.containsClock {
+                Label("Shows the time it was sent — frames can't tick yet.",
+                      systemImage: "clock.badge.exclamationmark")
+                    .font(.footnote)
+                    .foregroundStyle(.secondary)
+            }
 
             Button {
                 Task { await send(layout) }

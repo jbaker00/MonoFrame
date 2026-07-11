@@ -14,6 +14,12 @@ struct ScreenLayout: Codable, Identifiable, Hashable {
 
     var id: String { name }
 
+    // Screens are static pictures until frames can re-render server-side, so
+    // the UI warns that a clock shows the moment it was sent.
+    var containsClock: Bool {
+        widgets.contains { $0.type == .clock }
+    }
+
     static func decode(fromJSON json: String) throws -> ScreenLayout {
         let layout = try JSONDecoder().decode(ScreenLayout.self, from: Data(json.utf8))
         return layout.clamped()
