@@ -91,6 +91,59 @@ final class ScreenshotTests: XCTestCase {
         snap("04-sent")
     }
 
+    // Captures the Screens picker and the AI Create Screen flow (v1.2).
+    // Assumes frames are already paired on the simulator.
+    func testScreensShots() throws {
+        app.buttons["Screens"].firstMatch.tap()
+        // Sample cards render live previews; give the renderer a beat.
+        XCTAssertTrue(app.staticTexts["Month at a Glance"].waitForExistence(timeout: 15))
+        snap("06-screens")
+
+        app.buttons["Create New Screen"].firstMatch.tap()
+        _ = app.navigationBars["Create Screen"].waitForExistence(timeout: 10)
+        // Two text inputs in the sheet: [0] the description, [1] the reply.
+        let request = app.textFields.element(boundBy: 0)
+        XCTAssertTrue(request.waitForExistence(timeout: 10))
+        request.tap()
+        request.typeText("A countdown to our Hawaii vacation on Aug 20 with a bold HAWAII banner")
+        app.buttons["Copy Prompt"].firstMatch.tap()
+
+        let reply = app.textFields.element(boundBy: 1)
+        XCTAssertTrue(reply.waitForExistence(timeout: 10))
+        reply.tap()
+        let layoutJSON = """
+        {"version":1,"name":"Hawaii Countdown","description":"Days until the trip, at a glance.",\
+        "widgets":[{"type":"text","frame":{"x":0,"y":0.05,"w":1,"h":0.18},\
+        "props":{"text":"HAWAII","weight":"bold","inverted":true}},\
+        {"type":"countdown","frame":{"x":0.1,"y":0.3,"w":0.8,"h":0.42},\
+        "props":{"target":"2026-08-20","label":"until vacation"}},\
+        {"type":"date","frame":{"x":0.1,"y":0.85,"w":0.8,"h":0.1},"props":{"style":"short"}}]}
+        """
+        reply.typeText(layoutJSON)
+        app.buttons["Build Screen"].firstMatch.tap()
+        // The preview section renders below the fold, and Form rows are lazy
+        // — scroll until the Save button materializes.
+        let save = app.buttons["Save to My Screens"]
+        for _ in 0..<4 where !save.exists {
+            app.swipeUp()
+            Thread.sleep(forTimeInterval: 0.5)
+        }
+        XCTAssertTrue(save.waitForExistence(timeout: 10))
+        snap("07-create-screen")
+
+        // Save it and capture the picker with the My Screens section.
+        save.tap()
+        XCTAssertTrue(app.staticTexts["My Screens"].waitForExistence(timeout: 10))
+        XCTAssertTrue(app.staticTexts["Hawaii Countdown"].waitForExistence(timeout: 10))
+        snap("08-my-screens")
+
+        // Clean up so reruns don't accumulate "Hawaii Countdown 2, 3, …".
+        let delete = app.buttons["Delete"].firstMatch.exists
+            ? app.buttons["Delete"].firstMatch
+            : app.buttons["trash"].firstMatch
+        if delete.exists { delete.tap() }
+    }
+
     // Diagnostic: dump the photo picker's cell labels.
     func testDumpPickerLabels() throws {
         app.buttons["Pick a Photo"].tap()

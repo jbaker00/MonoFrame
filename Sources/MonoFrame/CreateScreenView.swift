@@ -42,6 +42,10 @@ struct CreateScreenView: View {
                     Text("Works with ChatGPT, Claude, Gemini — anything. The prompt already knows your frame is \(targetModel.resolutionText).")
                         .font(.footnote)
                         .foregroundStyle(.secondary)
+                    Label("Private by design: MonoFrame never contacts any AI service. The prompt only goes on your clipboard — you choose where to paste it.",
+                          systemImage: "hand.raised")
+                        .font(.footnote)
+                        .foregroundStyle(.secondary)
                     Link(destination: URL(string: "https://jbaker00.github.io/MonoFrame/support.html#mcp")!) {
                         Label("Using Claude or another MCP assistant? Registration options here",
                               systemImage: "link")
