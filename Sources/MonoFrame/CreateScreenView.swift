@@ -59,6 +59,13 @@ struct CreateScreenView: View {
                         .font(.footnote.monospaced())
                         .autocorrectionDisabled()
                         .textInputAutocapitalization(.never)
+                        .onChange(of: pastedReply) { _, reply in
+                            // Live preview: the moment the pasted text parses as
+                            // a layout, show it — no button tap needed. Errors
+                            // stay silent while typing; Build Screen reports them.
+                            errorText = ""
+                            generated = try? ScreenGenerator.parseLayout(from: reply)
+                        }
                     Button {
                         useReply()
                     } label: {
