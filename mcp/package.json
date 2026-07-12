@@ -5,9 +5,20 @@
   "type": "module",
   "bin": { "monoframe-screens-mcp": "server.js" },
   "main": "server.js",
+  "files": ["server.js", "lib/", "README.md"],
   "scripts": {
     "test": "node test/validate.test.js"
   },
+  "keywords": ["mcp", "modelcontextprotocol", "e-ink", "eink", "epaper", "monoframe", "dashboard", "esp32"],
+  "author": "James Baker (https://github.com/jbaker00)",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jbaker00/MonoFrame.git",
+    "directory": "mcp"
+  },
+  "homepage": "https://github.com/jbaker00/MonoFrame/tree/main/mcp",
+  "bugs": "https://github.com/jbaker00/MonoFrame/issues",
+  "engines": { "node": ">=18" },
   "dependencies": {
     "@modelcontextprotocol/sdk": "^1.0.0",
     "zod": "^3.23.0"

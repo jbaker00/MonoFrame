@@ -65,6 +65,45 @@
   the same technique used in newspaper printing. High-contrast photos with a clear
   subject look best. The app shows you an exact preview before you send.</p>
 
+  <h3 id="mcp">Designing screens with an AI (and the MCP server)</h3>
+  <p>Besides photos, MonoFrame can show <em>screens</em> — clock, calendar, countdowns,
+  notes. In the app, open <em>Screens &rarr; Create New Screen</em>, describe what you
+  want, and tap <em>Copy Prompt</em>. The prompt already contains your frame's exact
+  panel size and the layout format, so you can paste it into <strong>any AI chat</strong>
+  (ChatGPT, Claude, Gemini, a local model…), copy the AI's reply, and paste it back into
+  the app. No API key or account is needed, and the app repairs common formatting
+  quirks in pasted replies automatically.</p>
+
+  <p><strong>Power option — the MCP server.</strong> If you use an assistant that
+  supports the Model Context Protocol (Claude Desktop, Claude Code, and others), you can
+  register MonoFrame's free MCP server so the assistant checks its own work: it fetches
+  the design rules, validates the layout, fixes any problems, and hands you JSON that is
+  guaranteed to paste cleanly.</p>
+
+  <p>Claude Code — one line in a terminal:</p>
+  <pre><code>claude mcp add monoframe-screens -- npx -y monoframe-screens-mcp</code></pre>
+
+  <p>Claude Desktop — add this to <code>claude_desktop_config.json</code>
+  (Settings &rarr; Developer &rarr; Edit Config):</p>
+  <pre><code>{
+  "mcpServers": {
+    "monoframe-screens": {
+      "command": "npx",
+      "args": ["-y", "monoframe-screens-mcp"]
+    }
+  }
+}</code></pre>
+
+  <p>Other MCP clients: it's a standard stdio server — run
+  <code>npx -y monoframe-screens-mcp</code>. You can also run it from source:
+  clone <a href="https://github.com/jbaker00/MonoFrame">the repo</a>, then
+  <code>cd mcp &amp;&amp; npm install</code> and point your client at
+  <code>node /path/to/MonoFrame/mcp/server.js</code>.</p>
+
+  <p>Once registered, just ask your assistant something like <em>"design a MonoFrame
+  screen for my 7.5&Prime; frame counting down to our vacation on August&nbsp;20"</em> —
+  then paste the JSON it returns into <em>Create New Screen</em>.</p>
+
   <h3>How do I remove a frame?</h3>
   <p>In <em>My Frames</em>, swipe to delete. To wipe the frame itself, re-flash it from
   the <a href="flasher/">web flasher</a>. If you'd like the frame's data removed from our
