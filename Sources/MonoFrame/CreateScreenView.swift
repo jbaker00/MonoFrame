@@ -95,6 +95,7 @@ struct CreateScreenView: View {
                         }
                         Button {
                             customStore.add(layout)
+                            AppAnalytics.log("screen_created", ["panel": targetModel.rawValue])
                             dismiss()
                         } label: {
                             Label("Save to My Screens", systemImage: "square.and.arrow.down")

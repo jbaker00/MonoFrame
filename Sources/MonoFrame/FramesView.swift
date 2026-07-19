@@ -76,7 +76,10 @@ struct FramesView: View {
                 titleVisibility: .visible
             ) {
                 Button("Remove Frame", role: .destructive) {
-                    if let target = deleteTarget { store.remove(target) }
+                    if let target = deleteTarget {
+                        store.remove(target)
+                        AppAnalytics.log("frame_removed", ["panel": target.model.rawValue])
+                    }
                     deleteTarget = nil
                 }
             }

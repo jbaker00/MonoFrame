@@ -385,6 +385,7 @@ struct SetupWizardView: View {
             try? await HotspotJoiner.joinFrameHotspot(ssid: trimmedHotspotName, code: trimmedFrameCode)
             if let info = try? await DeviceClient.info(),
                !FirmwareBundle.isOutdated(info.fw) {
+                AppAnalytics.log("firmware_updated", ["panel": deviceModel.rawValue])
                 return true
             }
             try? await Task.sleep(for: .seconds(3))
@@ -482,6 +483,10 @@ struct SetupWizardView: View {
                           name: frameName.trimmingCharacters(in: .whitespaces),
                           createdAt: Date(), model: deviceModel)
         store.add(frame)
+        AppAnalytics.log("frame_paired", [
+            "panel": deviceModel.rawValue,
+            "demo": isDemo ? 1 : 0,
+        ])
         dismiss()
     }
 }

@@ -241,6 +241,10 @@ struct ContentView: View {
             }
         }
         if failures.isEmpty {
+            AppAnalytics.log("photo_sent", [
+                "frame_count": frames.count,
+                "panel": frames[0].model.rawValue,
+            ])
             status = frames.count == 1
                 ? "Sent! \(frames[0].name) will show it within 30 minutes — or press \(frames[0].model.syncButtonHint) to show it now."
                 : "Sent to all \(frames.count) frames. They'll show it within 30 minutes — or press a frame's sync button to show it now."

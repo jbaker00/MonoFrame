@@ -6,3 +6,5 @@ node_modules/
 *.log
 firmware/MonoFrameDisplay/config.h
 sec.h
+GoogleService-Info.plist
+build-analytics/

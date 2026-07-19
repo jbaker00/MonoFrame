@@ -12,6 +12,8 @@
 		107A133F7B8B30B2229E6090 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 1B62D73737DFE666F2354B2D /* Assets.xcassets */; };
 		128B6209B763AAE050C28D8A /* ScreenshotTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49CB5F8A2A16109D9AD13366 /* ScreenshotTests.swift */; };
 		1BB8AB4FEBE456B092194881 /* monoframe-ota-579.bin in Resources */ = {isa = PBXBuildFile; fileRef = 92EDC66D07DF8E11D2235C83 /* monoframe-ota-579.bin */; };
+		1EF280DE5C22CD751A5622FF /* FirebaseAnalytics in Frameworks */ = {isa = PBXBuildFile; productRef = BF43EFAA361EE860E793D5CB /* FirebaseAnalytics */; };
+		1F8D3F5F37351F5785C32B60 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 05405085876B6CA7BF2CE76B /* GoogleService-Info.plist */; };
 		1FC6DE5EBA1C8D686D9058AC /* DeviceModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 317BCC55BDB69F1C7E822C82 /* DeviceModel.swift */; };
 		2E6CAA41FC9C14134225190C /* DeviceClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6FBD7AFF405F6C997916267 /* DeviceClient.swift */; };
 		41C9A21DA59A092CEF6266EB /* EinkConverter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21ED6565E828E961E292F678 /* EinkConverter.swift */; };
@@ -28,6 +30,7 @@
 		A995425CA6E8705E949F0853 /* CustomScreenStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFE7E6FB1327B95F25CE4104 /* CustomScreenStore.swift */; };
 		B2F6EC877D099363CD77EBB5 /* ScreenRenderTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46769C90F5AF6755BD1076D8 /* ScreenRenderTests.swift */; };
 		BBA44598373F0A77C23AA69A /* monoframe-ota-42.bin in Resources */ = {isa = PBXBuildFile; fileRef = E74497B40EE24BCE1601B090 /* monoframe-ota-42.bin */; };
+		CC5F18CB40E986F94AB9E209 /* AppAnalytics.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CEB839AB407614B159F6CC7 /* AppAnalytics.swift */; };
 		D41D8AA67E7707BB62413F16 /* FramesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 09A48C36559B60EF42539337 /* FramesView.swift */; };
 		DD5E20D01E05845152B15B59 /* version.txt in Resources */ = {isa = PBXBuildFile; fileRef = 218FD25F0440D66A8F476016 /* version.txt */; };
 		DF3836C875BF84C1EC35DF84 /* ScreenGeneratorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8619BB51C519BCD0DD1F0FD4 /* ScreenGeneratorTests.swift */; };
@@ -52,6 +55,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		05405085876B6CA7BF2CE76B /* GoogleService-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		09A48C36559B60EF42539337 /* FramesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FramesView.swift; sourceTree = "<group>"; };
 		1B62D73737DFE666F2354B2D /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		1EB2C8BA9182C0E3EAFE9C11 /* ScreenGenerator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScreenGenerator.swift; sourceTree = "<group>"; };
@@ -65,6 +69,7 @@
 		49CB5F8A2A16109D9AD13366 /* ScreenshotTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScreenshotTests.swift; sourceTree = "<group>"; };
 		4E30FBBDC9C13F7A553AFBF9 /* MonoFrameApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MonoFrameApp.swift; sourceTree = "<group>"; };
 		51C6589C8A0C9A92D131DC7E /* CreateScreenView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateScreenView.swift; sourceTree = "<group>"; };
+		7CEB839AB407614B159F6CC7 /* AppAnalytics.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppAnalytics.swift; sourceTree = "<group>"; };
 		820BD066EC78ADABE177F8E4 /* SetupWizardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SetupWizardView.swift; sourceTree = "<group>"; };
 		8619BB51C519BCD0DD1F0FD4 /* ScreenGeneratorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScreenGeneratorTests.swift; sourceTree = "<group>"; };
 		92EDC66D07DF8E11D2235C83 /* monoframe-ota-579.bin */ = {isa = PBXFileReference; lastKnownFileType = archive.macbinary; path = "monoframe-ota-579.bin"; sourceTree = "<group>"; };
@@ -81,6 +86,17 @@
 		F6941AA77662D6AEDD958E65 /* ScreensView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScreensView.swift; sourceTree = "<group>"; };
 		FD078CC94EB5E2EFAB10AB42 /* SampleScreens.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SampleScreens.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		01300C523F5B64AA1E4B8AE3 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				1EF280DE5C22CD751A5622FF /* FirebaseAnalytics in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
 		0A6B903D4B4F1E58E43678AC /* MonoFrameUITests */ = {
@@ -104,6 +120,7 @@
 		72C089DF31104D7971551BE4 /* MonoFrame */ = {
 			isa = PBXGroup;
 			children = (
+				7CEB839AB407614B159F6CC7 /* AppAnalytics.swift */,
 				C046C273624DD2F4DC2DD621 /* ContentView.swift */,
 				51C6589C8A0C9A92D131DC7E /* CreateScreenView.swift */,
 				BFE7E6FB1327B95F25CE4104 /* CustomScreenStore.swift */,
@@ -114,6 +131,7 @@
 				376CFC2A0A421A07C2BEC795 /* FrameService.swift */,
 				A8FDDA2E56C6E0393A15B9E1 /* FrameStore.swift */,
 				09A48C36559B60EF42539337 /* FramesView.swift */,
+				05405085876B6CA7BF2CE76B /* GoogleService-Info.plist */,
 				4E30FBBDC9C13F7A553AFBF9 /* MonoFrameApp.swift */,
 				FD078CC94EB5E2EFAB10AB42 /* SampleScreens.swift */,
 				1EB2C8BA9182C0E3EAFE9C11 /* ScreenGenerator.swift */,
@@ -213,6 +231,7 @@
 			buildPhases = (
 				0FD61F293AF0BAE8F86D6C59 /* Sources */,
 				6F0A72310B63CC9CD3D32E31 /* Resources */,
+				01300C523F5B64AA1E4B8AE3 /* Frameworks */,
 			);
 			buildRules = (
 			);
@@ -220,6 +239,7 @@
 			);
 			name = MonoFrame;
 			packageProductDependencies = (
+				BF43EFAA361EE860E793D5CB /* FirebaseAnalytics */,
 			);
 			productName = MonoFrame;
 			productReference = A7F50BC928F0CC8508CD0CBB /* MonoFrame.app */;
@@ -258,6 +278,9 @@
 			);
 			mainGroup = DEBC6748051643D477C3619F;
 			minimizedProjectReferenceProxies = 1;
+			packageReferences = (
+				22A855C9E1E5914DBC9A3663 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
+			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = D97FD166C1085CE90566C5E3 /* Products */;
 			projectDirPath = "";
@@ -276,6 +299,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				107A133F7B8B30B2229E6090 /* Assets.xcassets in Resources */,
+				1F8D3F5F37351F5785C32B60 /* GoogleService-Info.plist in Resources */,
 				BBA44598373F0A77C23AA69A /* monoframe-ota-42.bin in Resources */,
 				1BB8AB4FEBE456B092194881 /* monoframe-ota-579.bin in Resources */,
 				470AC6F7E4FCF2A07F83FE54 /* monoframe-ota-e1001.bin in Resources */,
@@ -307,6 +331,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				CC5F18CB40E986F94AB9E209 /* AppAnalytics.swift in Sources */,
 				5E29F97FB8B58F8C8B2051CC /* ContentView.swift in Sources */,
 				5F208A23544217687AC23125 /* CreateScreenView.swift in Sources */,
 				A995425CA6E8705E949F0853 /* CustomScreenStore.swift in Sources */,
@@ -412,7 +437,7 @@
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				CODE_SIGN_STYLE = Automatic;
 				COPY_PHASE_STRIP = NO;
-				CURRENT_PROJECT_VERSION = 4;
+				CURRENT_PROJECT_VERSION = 5;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_TEAM = G3P9A8Z2NP;
 				ENABLE_NS_ASSERTIONS = NO;
@@ -426,7 +451,7 @@
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
-				MARKETING_VERSION = 1.2;
+				MARKETING_VERSION = 1.3;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -472,7 +497,7 @@
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				CODE_SIGN_STYLE = Automatic;
 				COPY_PHASE_STRIP = NO;
-				CURRENT_PROJECT_VERSION = 4;
+				CURRENT_PROJECT_VERSION = 5;
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				DEVELOPMENT_TEAM = G3P9A8Z2NP;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
@@ -492,7 +517,7 @@
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
-				MARKETING_VERSION = 1.2;
+				MARKETING_VERSION = 1.3;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
@@ -612,6 +637,25 @@
 			defaultConfigurationName = Debug;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		22A855C9E1E5914DBC9A3663 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/firebase/firebase-ios-sdk";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 11.0.0;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		BF43EFAA361EE860E793D5CB /* FirebaseAnalytics */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 22A855C9E1E5914DBC9A3663 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseAnalytics;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 4AC912DF6D151848E14AC1E8 /* Project object */;
 }

@@ -8,10 +8,15 @@ options:
 settings:
   base:
     SWIFT_VERSION: "5.9"
-    MARKETING_VERSION: "1.2"
-    CURRENT_PROJECT_VERSION: "4"
+    MARKETING_VERSION: "1.3"
+    CURRENT_PROJECT_VERSION: "5"
     DEVELOPMENT_TEAM: "G3P9A8Z2NP"
     CODE_SIGN_STYLE: Automatic
+
+packages:
+  Firebase:
+    url: https://github.com/firebase/firebase-ios-sdk
+    from: 11.0.0
 
 targets:
   MonoFrame:
@@ -22,6 +27,9 @@ targets:
         excludes:
           - Resources/Info.plist
           - Resources/MonoFrame.entitlements
+    dependencies:
+      - package: Firebase
+        product: FirebaseAnalytics
     settings:
       base:
         PRODUCT_BUNDLE_IDENTIFIER: com.jamesbaker.MonoFrame

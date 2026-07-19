@@ -176,6 +176,10 @@ struct ScreensView: View {
         }
         do {
             try await FrameService.upload(blob, to: frame)
+            AppAnalytics.log("screen_sent", [
+                "panel": frame.model.rawValue,
+                "custom": customStore.screens.contains { $0.name == layout.name } ? 1 : 0,
+            ])
             status = "Sent! \(frame.name) will show \(layout.name) within 30 minutes — or press \(frame.model.syncButtonHint) to show it now."
         } catch {
             status = "Send failed — \(error.localizedDescription)"
